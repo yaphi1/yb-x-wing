@@ -26,6 +26,9 @@ dependencies:
   three:
     specifier: ^0.169.0
     version: 0.169.0
+  three-stdlib:
+    specifier: ^2.33.0
+    version: 2.33.0(three@0.169.0)
 
 devDependencies:
   '@types/node':
