@@ -117,10 +117,12 @@ type GLTFResult = GLTF & {
   }
 }
 
-export function XWing(props: JSX.IntrinsicElements['group']) {
+export function XWing({ xWingRef, ...groupProps } : {
+  xWingRef: React.Ref<THREE.Group>;
+} & JSX.IntrinsicElements['group']) {
   const { nodes, materials } = useGLTF('/models/x-wing-export.glb') as GLTFResult;
   return (
-    <group {...props} dispose={null}>
+    <group {...groupProps} ref={xWingRef} dispose={null}>
       <group name="Scene">
         <group name="wings" position={[3.414, 0, 0]}>
           <mesh
