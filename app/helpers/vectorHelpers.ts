@@ -8,6 +8,5 @@ export function setQuaternionFromDirection({
   startingDirection?: Vector3;
   direction: Vector3;
 }) {
-  if (!direction) {return;}
   return new Quaternion().setFromUnitVectors(startingDirection, direction);
 };

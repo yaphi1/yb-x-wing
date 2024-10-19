@@ -2,11 +2,15 @@ import { KeyboardControls } from '@react-three/drei';
 import { PropsWithChildren } from 'react';
 
 const map = [
-  { name: 'forward', keys: ['w', 'ArrowUp'] },
-  { name: 'backward', keys: ['s', 'ArrowDown'] },
-  { name: 'left', keys: ['a', 'ArrowLeft'] },
-  { name: 'right', keys: ['d', 'ArrowRight'] },
-  { name: 'reset', keys: ['r', ' '] },
+  { name: 'forward', keys: ['ArrowUp'] },
+  { name: 'backward', keys: ['ArrowDown'] },
+  { name: 'left', keys: ['ArrowLeft'] },
+  { name: 'right', keys: ['ArrowRight'] },
+  { name: 'zoomIn', keys: ['w'] },
+  { name: 'zoomOut', keys: ['s'] },
+  { name: 'rotateCounterclockwise', keys: ['a'] },
+  { name: 'rotateClockwise', keys: ['d'] },
+  { name: 'reset', keys: ['r'] },
 ];
 
 /**
