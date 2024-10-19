@@ -1,10 +1,11 @@
 import * as THREE from 'three';
-import { useKeyboardControls } from '@react-three/drei';
+import { PerspectiveCamera, useKeyboardControls } from '@react-three/drei';
 import { XWing } from './XWing';
 import { useEffect, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
+import { setQuaternionFromDirection } from '../helpers/vectorHelpers';
 
-const isDebug = false;
+const isDebug = true;
 const turnAngle = 0.03;
 const startingSpeed = 10;
 
@@ -21,15 +22,18 @@ type PlayerProps = {
 
 export function Player({
   startingPosition = new THREE.Vector3(20, 2, 0),
-  startingDirection = new THREE.Vector3(-1, 0, 0),
+  startingDirection = new THREE.Vector3(0, 0, -1),
 } : PlayerProps) {
   const xWingRef = useRef<THREE.Group>(null!);
+  const groupRef = useRef<THREE.Group>(null!);
+  const cameraRef = useRef<THREE.Group>(null!);
+
   const speed = useRef(startingSpeed);
   const direction = useRef(startingDirection);
 
   useEffect(() => {
     const { x, y, z } = startingPosition;
-    xWingRef.current.position.set(x, y, z);
+    groupRef.current.position.set(x, y, z);
   } ,[]);
 
   const isForwardPressed = useKeyboardControls(state => state.forward);
@@ -47,22 +51,22 @@ export function Player({
       // @ts-expect-error
       window.velocity = velocity;
       // @ts-expect-error
-      window.position = xWingRef.current.position;
+      window.position = groupRef.current.position;
     }
   
-    xWingRef.current.position.add(velocity);
+    groupRef.current.position.add(velocity);
 
     if (isLeftPressed) {
       direction.current.applyAxisAngle(axes.y, turnAngle);
-      xWingRef.current.rotation.y += turnAngle;
+      groupRef.current.rotation.y += turnAngle;
     }
     if (isRightPressed) {
       direction.current.applyAxisAngle(axes.y, -turnAngle);
-      xWingRef.current.rotation.y += -turnAngle;
+      groupRef.current.rotation.y += -turnAngle;
     }
     if (isResetPressed) {
       const { x, y, z } = startingPosition;
-      xWingRef.current.position.set(x, y, z);
+      groupRef.current.position.set(x, y, z);
     }
   });
 
@@ -73,9 +77,35 @@ export function Player({
     console.log('x-wing ref', xWingRef);
   }, [isForwardPressed]);
 
+  const cameraAngle = 0.8 * Math.PI;
+  const cameraDistance = 20;
+  const cameraHeight = 4;
+  const cameraDirection = new THREE.Vector3(
+    Math.sin(cameraAngle - Math.PI),
+    0,
+    Math.cos(cameraAngle - Math.PI),
+  );
+  const cameraPosition: [number, number, number] = [
+    -cameraDistance * cameraDirection.x,
+    cameraHeight,
+    -cameraDistance * cameraDirection.z,
+  ];
+
   return (
-    <XWing
-      xWingRef={xWingRef}
-    />
+    <group ref={groupRef}>
+      <XWing
+        xWingRef={xWingRef}
+      />
+      <group
+        ref={cameraRef}
+        position={cameraPosition}
+        quaternion={setQuaternionFromDirection({
+          startingDirection,
+          direction: cameraDirection,
+        })}
+      >
+        <PerspectiveCamera makeDefault fov={50} />
+      </group>
+    </group>
   );
 }
