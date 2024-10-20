@@ -16,6 +16,10 @@ const map = [
   { name: 'rotateClockwise', keys: ['d'] },
   { name: 'reset', keys: ['r'] },
   { name: 'pause', keys: ['p'] },
+  { name: 'cam1', keys: ['1'] },
+  { name: 'cam2', keys: ['2'] },
+  { name: 'cam3', keys: ['3'] },
+  { name: 'cam4', keys: ['4'] },
 ];
 
 /**

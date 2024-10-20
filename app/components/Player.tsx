@@ -38,17 +38,24 @@ const axes = {
 	x: new THREE.Vector3(1, 0, 0),
 	y: new THREE.Vector3(0, 1, 0),
 	z: new THREE.Vector3(0, 0, 1),
-};
+} as const;
 
 const initialPosition = new THREE.Vector3(0, lowestPosition + 20, 0);
 const initialDirection = new THREE.Vector3(0, 0, -1);
 
-const CAMERA_ANGLE_PRESETS = {
-  BACK: 0,
-  BACK_RIGHT: 0.2 * Math.PI,
-  FRONT_RIGHT: 0.8 * Math.PI,
-};
-const initialCameraAngle = CAMERA_ANGLE_PRESETS.BACK_RIGHT;
+const CAM_PRESETS = {
+  BACK: 'BACK',
+  BACK_RIGHT: 'BACK_RIGHT',
+  FRONT_RIGHT: 'FRONT_RIGHT',
+  FRONT: 'FRONT',
+} as const;
+const CAM_PRESET_ANGLES = {
+  [CAM_PRESETS.BACK]: 0,
+  [CAM_PRESETS.BACK_RIGHT]: 0.2 * Math.PI,
+  [CAM_PRESETS.FRONT_RIGHT]: 0.8 * Math.PI,
+  [CAM_PRESETS.FRONT]: Math.PI,
+} as const;
+const initialCameraAngle = CAM_PRESET_ANGLES.BACK_RIGHT;
 const initialCameraDistance = 20;
 const initialCameraHeight = 8;
 
@@ -132,6 +139,21 @@ export function Player({
       setIsPaused((wasPaused) => !wasPaused);
     }
   }, [isPausePressed]);
+  
+  const isCamPresetPressed = {
+    [CAM_PRESETS.BACK]: useKeyboardControls(state => state.cam1),
+    [CAM_PRESETS.BACK_RIGHT]: useKeyboardControls(state => state.cam2),
+    [CAM_PRESETS.FRONT_RIGHT]: useKeyboardControls(state => state.cam3),
+    [CAM_PRESETS.FRONT]: useKeyboardControls(state => state.cam4),
+  };
+
+  useEffect(() => {
+    for (const camPreset of Object.values(CAM_PRESETS)) {
+      if (isCamPresetPressed[camPreset]) {
+        updateCamera({ newCameraAngle: CAM_PRESET_ANGLES[camPreset] });
+      }
+    }
+  }, [isCamPresetPressed]);
 
   const turn = useCallback(({ delta, turnDirection } : {
     delta: number;
