@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { PerspectiveCamera, useKeyboardControls } from '@react-three/drei';
 import { XWing } from './XWing';
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useFrame } from '@react-three/fiber';
 
 const isDebug = true;
@@ -14,6 +14,8 @@ const pitchSpeed = 10;
 const verticalMovementStrength = 10;
 const startingSpeed = 10;
 const lowestPosition = 2;
+const zoomSpeed = 10;
+const verticalCameraSpeed = 10;
 
 const TURN_DIRECTION = {
   LEFT: 1,
@@ -33,16 +35,8 @@ const initialDirection = new THREE.Vector3(0, 0, -1);
 
 // const initialCameraAngle = 0.8 * Math.PI;
 const initialCameraAngle = 0;
-const cameraDistance = 20;
-const cameraHeight = 10;
-
-const getCameraPosition = ({ cameraAngle } : { cameraAngle: number; }) => {
-  return new THREE.Vector3(
-    cameraDistance * Math.sin(cameraAngle),
-    cameraHeight,
-    cameraDistance * Math.cos(cameraAngle),
-  );
-};
+const initialCameraDistance = 20;
+const initialCameraHeight = 10;
 
 type PlayerProps = {
   startingPosition?: THREE.Vector3;
@@ -53,27 +47,44 @@ export function Player({
   startingPosition = initialPosition,
   startingDirection = initialDirection,
 } : PlayerProps) {
-  const xWingRef = useRef<THREE.Group>(null!);
+  const [isPaused, setIsPaused] = useState(false);
+
   const groupRef = useRef<THREE.Group>(null!);
-  const cameraRef = useRef<THREE.PerspectiveCamera>(null!);
+  const xWingRef = useRef<THREE.Group>(null!);
   const rotationBoxRef = useRef<THREE.Group>(null!);
 
   const speed = useRef(startingSpeed);
   const direction = useRef(startingDirection);
+
+  const cameraRef = useRef<THREE.PerspectiveCamera>(null!);
   const cameraAngle = useRef(initialCameraAngle);
+  const cameraDistance = useRef(initialCameraDistance);
+  const cameraHeight = useRef(initialCameraHeight);
+
+  const getCameraPosition = useCallback((): [number, number, number] => {
+    return [
+      cameraDistance.current * Math.sin(cameraAngle.current),
+      cameraHeight.current,
+      cameraDistance.current * Math.cos(cameraAngle.current),
+    ];
+  }, []);
+
+  const updateCamera = useCallback(({ newCameraAngle, newCameraDistance, newCameraHeight } : {
+    newCameraAngle?: number;
+    newCameraDistance?: number;
+    newCameraHeight?: number;
+  }) => {
+    cameraAngle.current = newCameraAngle ?? cameraAngle.current;
+    cameraDistance.current = Math.max(newCameraDistance ?? cameraDistance.current, 0);
+    cameraHeight.current = newCameraHeight ?? cameraHeight.current;
+    cameraRef.current.position.set(...getCameraPosition());
+    cameraRef.current.lookAt(groupRef.current.position);
+  }, [getCameraPosition]);
 
   useEffect(() => {
-    console.log('setting starting position', startingPosition);
     const { x, y, z } = startingPosition;
     groupRef.current.position.set(x, y, z);
   } , [startingPosition]);
-
-  const updateCamera = useCallback(({ newCameraAngle } : { newCameraAngle: number; }) => {
-    cameraAngle.current = newCameraAngle;
-    const { x, y, z } = getCameraPosition({ cameraAngle: newCameraAngle });
-    cameraRef.current.position.set(x, y, z);
-    cameraRef.current.lookAt(groupRef.current.position);
-  }, []);
 
   useEffect(() => {
     updateCamera({ newCameraAngle: initialCameraAngle });
@@ -86,10 +97,19 @@ export function Player({
 
   const isZoomInPressed = useKeyboardControls(state => state.zoomIn);
   const isZoomOutPressed = useKeyboardControls(state => state.zoomOut);
+  const isRaiseCameraPressed = useKeyboardControls(state => state.raiseCamera);
+  const isLowerCameraPressed = useKeyboardControls(state => state.lowerCamera);
   const isRotateClockwisePressed = useKeyboardControls(state => state.rotateClockwise);
   const isRotateCounterclockwisePressed = useKeyboardControls(state => state.rotateCounterclockwise);
 
   const isResetPressed = useKeyboardControls(state => state.reset);
+  const isPausePressed = useKeyboardControls(state => state.pause);
+
+  useEffect(() => {
+    if (isPausePressed) {
+      setIsPaused((wasPaused) => !wasPaused);
+    }
+  }, [isPausePressed]);
 
   const turn = useCallback(({ delta, turnDirection } : {
     delta: number;
@@ -104,11 +124,11 @@ export function Player({
     );
   }, []);
 
-  useFrame((state, delta) => {
+  const moveXWing = useCallback(({ delta } : { delta: number }) => {
     const speedScalar = speed.current * delta;
     const copyOfDirection: THREE.Vector3 = Object.create(direction.current);
     const velocity = copyOfDirection.multiplyScalar(speedScalar);
-    const isAtBottom = groupRef.current.position.y <= lowestPosition;
+    groupRef.current.position.add(velocity);
 
     if (isDebug) {
       // @ts-expect-error - global reference added to window for debugging only
@@ -116,8 +136,14 @@ export function Player({
       // @ts-expect-error - global reference added to window for debugging only
       window.position = groupRef.current.position;
     }
-  
-    groupRef.current.position.add(velocity);
+  }, []);
+
+  useFrame((state, delta) => {
+    const isAtBottom = groupRef.current.position.y <= lowestPosition;
+
+    if (!isPaused) {
+      moveXWing({ delta });
+    }
 
     if (isLeftPressed) {
       turn({ delta, turnDirection: TURN_DIRECTION.LEFT });
@@ -157,12 +183,18 @@ export function Player({
     if (isRotateClockwisePressed) {
       updateCamera({ newCameraAngle: cameraAngle.current + delta });
     }
-    /*
-      todo:
-      - add camera distance and height change
-      - add pause
-      - take dev log photos
-    */
+    if (isZoomInPressed) {
+      updateCamera({ newCameraDistance: cameraDistance.current - zoomSpeed * delta });
+    }
+    if (isZoomOutPressed) {
+      updateCamera({ newCameraDistance: cameraDistance.current + zoomSpeed * delta });
+    }
+    if (isRaiseCameraPressed) {
+      updateCamera({ newCameraHeight: cameraHeight.current + verticalCameraSpeed * delta });
+    }
+    if (isLowerCameraPressed) {
+      updateCamera({ newCameraHeight: cameraHeight.current - verticalCameraSpeed * delta });
+    }
   });
 
   return (

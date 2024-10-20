@@ -6,11 +6,14 @@ const map = [
   { name: 'backward', keys: ['ArrowDown'] },
   { name: 'left', keys: ['ArrowLeft'] },
   { name: 'right', keys: ['ArrowRight'] },
+  { name: 'raiseCamera', keys: ['e'] },
+  { name: 'lowerCamera', keys: ['q'] },
   { name: 'zoomIn', keys: ['w'] },
   { name: 'zoomOut', keys: ['s'] },
   { name: 'rotateCounterclockwise', keys: ['a'] },
   { name: 'rotateClockwise', keys: ['d'] },
   { name: 'reset', keys: ['r'] },
+  { name: 'pause', keys: ['p'] },
 ];
 
 /**
