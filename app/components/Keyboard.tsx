@@ -6,6 +6,8 @@ const map = [
   { name: 'backward', keys: ['ArrowDown'] },
   { name: 'left', keys: ['ArrowLeft'] },
   { name: 'right', keys: ['ArrowRight'] },
+  { name: 'accelerate', keys: ['t'] },
+  { name: 'decelerate', keys: ['g'] },
   { name: 'raiseCamera', keys: ['e'] },
   { name: 'lowerCamera', keys: ['q'] },
   { name: 'zoomIn', keys: ['w'] },

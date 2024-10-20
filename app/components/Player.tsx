@@ -5,6 +5,9 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useFrame } from '@react-three/fiber';
 
 const startingSpeed = 200;
+const minSpeed = 0;
+const topSpeed = 300;
+const acceleration = 100;
 const turnStrength = 1;
 const rollAmount = 0.6;
 const rollSpeed = 2;
@@ -14,13 +17,6 @@ const groundClippingBuffer = pitchAmount / pitchSpeed * startingSpeed;
 const lowestPosition = 20 + groundClippingBuffer;
 const zoomSpeed = 10;
 const verticalCameraSpeed = 10;
-
-/*
-todo:
-- add speed control
-- add scenery
-- add multiplayer
-*/
 
 const TURN_DIRECTION = {
   LEFT: 1,
@@ -114,6 +110,9 @@ export function Player({
   const isLeftPressed = useKeyboardControls(state => state.left);
   const isRightPressed = useKeyboardControls(state => state.right);
 
+  const isAcceleratePressed = useKeyboardControls(state => state.accelerate);
+  const isDeceleratePressed = useKeyboardControls(state => state.decelerate);
+
   const isZoomInPressed = useKeyboardControls(state => state.zoomIn);
   const isZoomOutPressed = useKeyboardControls(state => state.zoomOut);
   const isRaiseCameraPressed = useKeyboardControls(state => state.raiseCamera);
@@ -186,6 +185,12 @@ export function Player({
     }
     if (!isForwardPressed && !isBackwardPressed) {
       pitch({ delta, pitchDirection: PITCH_DIRECTION.CENTER });
+    }
+    if (isAcceleratePressed) {
+      speed.current = Math.min(topSpeed, speed.current + acceleration * delta);
+    }
+    if (isDeceleratePressed) {
+      speed.current = Math.max(minSpeed, speed.current - acceleration * delta);
     }
     if (isResetPressed) {
       resetPosition();
