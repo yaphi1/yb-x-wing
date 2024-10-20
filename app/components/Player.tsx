@@ -13,6 +13,8 @@ const rollAmount = 0.6;
 const rollSpeed = 2;
 const pitchAmount = 0.6;
 const pitchSpeed = 2;
+const yawAmount = 0.3;
+const yawSpeed = 2;
 const groundClippingBuffer = pitchAmount / pitchSpeed * startingSpeed;
 const lowestPosition = 20 + groundClippingBuffer;
 const zoomSpeed = 10;
@@ -43,10 +45,10 @@ const initialDirection = new THREE.Vector3(0, 0, -1);
 
 const CAMERA_ANGLE_PRESETS = {
   BACK: 0,
-  BACK_DIAGONAL_RIGHT: 0.2 * Math.PI,
-  FRONT_DIAGONAL_RIGHT: 0.8 * Math.PI,
+  BACK_RIGHT: 0.2 * Math.PI,
+  FRONT_RIGHT: 0.8 * Math.PI,
 };
-const initialCameraAngle = CAMERA_ANGLE_PRESETS.BACK_DIAGONAL_RIGHT;
+const initialCameraAngle = CAMERA_ANGLE_PRESETS.BACK_RIGHT;
 const initialCameraDistance = 20;
 const initialCameraHeight = 8;
 
@@ -62,7 +64,9 @@ export function Player({
   const [isPaused, setIsPaused] = useState(false);
 
   const groupRef = useRef<THREE.Group>(null!);
-  const rotationBoxRef = useRef<THREE.Group>(null!);
+  const pitchAndRollBoxRef = useRef<THREE.Group>(null!);
+  const swayBoxRef = useRef<THREE.Group>(null!);
+  const yawBoxRef = useRef<THREE.Group>(null!);
 
   const speed = useRef(startingSpeed);
   const direction = useRef(startingDirection);
@@ -137,8 +141,13 @@ export function Player({
     const rollTarget = rollAmount * turnDirection;
     direction.current.applyAxisAngle(axes.y, turnAngle);
     groupRef.current.rotation.y += turnAngle;
-    rotationBoxRef.current.rotation.x = THREE.MathUtils.damp(
-      rotationBoxRef.current.rotation.x, rollTarget, rollSpeed, delta
+    pitchAndRollBoxRef.current.rotation.x = THREE.MathUtils.damp(
+      pitchAndRollBoxRef.current.rotation.x, rollTarget, rollSpeed, delta
+    );
+
+    const yawTarget = yawAmount * turnDirection;
+    yawBoxRef.current.rotation.y = THREE.MathUtils.damp(
+      yawBoxRef.current.rotation.y, yawTarget, yawSpeed, delta
     );
   }, []);
 
@@ -158,13 +167,20 @@ export function Player({
     const isHittingBottom = isAtBottom && isGoingDown;
     const pitchTarget = isHittingBottom ? 0 : -pitchAmount * pitchDirection;
 
-    rotationBoxRef.current.rotation.z = THREE.MathUtils.damp(
-      rotationBoxRef.current.rotation.z, pitchTarget, pitchSpeed, delta
+    pitchAndRollBoxRef.current.rotation.z = THREE.MathUtils.damp(
+      pitchAndRollBoxRef.current.rotation.z, pitchTarget, pitchSpeed, delta
     );
-    direction.current.y = -rotationBoxRef.current.rotation.z;
+    direction.current.y = -pitchAndRollBoxRef.current.rotation.z;
+  }, []);
+
+  const sway = useCallback(({ elapsedTime } : { elapsedTime: number; }) => {
+    const amplitude = 0.02;
+    const frequency = 1.5;
+    swayBoxRef.current.rotation.x = amplitude * Math.sin(elapsedTime * frequency);
   }, []);
 
   useFrame((state, delta) => {
+    sway({ elapsedTime: state.clock.elapsedTime });
     if (!isPaused) {
       moveXWing({ delta });
     }
@@ -217,7 +233,11 @@ export function Player({
 
   return (
     <group ref={groupRef}>
-      <XWing rotationBoxRef={rotationBoxRef} />
+      <XWing
+        pitchAndRollBoxRef={pitchAndRollBoxRef}
+        swayBoxRef={swayBoxRef}
+        yawBoxRef={yawBoxRef}
+      />
       <PerspectiveCamera ref={cameraRef} makeDefault fov={50} />
     </group>
   );
