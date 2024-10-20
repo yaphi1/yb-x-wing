@@ -1,5 +1,5 @@
-const defaultGridSize = 100;
-const defaultDivisions = defaultGridSize;
+const defaultGridSize = 10000;
+const defaultDivisions = defaultGridSize / 10;
 
 export function Grid({
   size = defaultGridSize,

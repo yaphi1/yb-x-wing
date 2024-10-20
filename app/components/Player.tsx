@@ -4,16 +4,23 @@ import { XWing } from './XWing';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useFrame } from '@react-three/fiber';
 
+const startingSpeed = 200;
 const turnStrength = 1;
-const rollAmount = 0.4;
-const rollSpeed = 10;
-const pitchAmount = 0.4;
-const pitchSpeed = 10;
-const verticalMovementStrength = 10;
-const startingSpeed = 10;
-const lowestPosition = 2;
+const rollAmount = 0.6;
+const rollSpeed = 2;
+const pitchAmount = 0.6;
+const pitchSpeed = 2;
+const groundClippingBuffer = pitchAmount / pitchSpeed * startingSpeed;
+const lowestPosition = 20 + groundClippingBuffer;
 const zoomSpeed = 10;
 const verticalCameraSpeed = 10;
+
+/*
+todo:
+- add speed control
+- add scenery
+- add multiplayer
+*/
 
 const TURN_DIRECTION = {
   LEFT: 1,
@@ -35,10 +42,15 @@ const axes = {
 	z: new THREE.Vector3(0, 0, 1),
 };
 
-const initialPosition = new THREE.Vector3(0, lowestPosition + 5, 0);
+const initialPosition = new THREE.Vector3(0, lowestPosition + 20, 0);
 const initialDirection = new THREE.Vector3(0, 0, -1);
 
-const initialCameraAngle = 0.8 * Math.PI;
+const CAMERA_ANGLE_PRESETS = {
+  BACK: 0,
+  BACK_DIAGONAL_RIGHT: 0.2 * Math.PI,
+  FRONT_DIAGONAL_RIGHT: 0.8 * Math.PI,
+};
+const initialCameraAngle = CAMERA_ANGLE_PRESETS.BACK_DIAGONAL_RIGHT;
 const initialCameraDistance = 20;
 const initialCameraHeight = 8;
 
@@ -145,13 +157,12 @@ export function Player({
     const isGoingDown = pitchDirection === PITCH_DIRECTION.DOWN;
     const isAtBottom = groupRef.current.position.y <= lowestPosition;
     const isHittingBottom = isAtBottom && isGoingDown;
-    const verticalMovementIncrement = pitchDirection * verticalMovementStrength * delta;
     const pitchTarget = isHittingBottom ? 0 : -pitchAmount * pitchDirection;
 
-    groupRef.current.position.y += isHittingBottom ? 0 : verticalMovementIncrement;
     rotationBoxRef.current.rotation.z = THREE.MathUtils.damp(
       rotationBoxRef.current.rotation.z, pitchTarget, pitchSpeed, delta
     );
+    direction.current.y = -rotationBoxRef.current.rotation.z;
   }, []);
 
   useFrame((state, delta) => {
