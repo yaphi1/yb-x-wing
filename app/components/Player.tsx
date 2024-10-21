@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { PerspectiveCamera, useKeyboardControls } from '@react-three/drei';
 import { XWing } from './XWing';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useFrame } from '@react-three/fiber';
 
 const startingSpeed = 200;
@@ -140,12 +140,12 @@ export function Player({
     }
   }, [isPausePressed]);
   
-  const isCamPresetPressed = {
-    [CAM_PRESETS.BACK]: useKeyboardControls(state => state.cam1),
-    [CAM_PRESETS.BACK_RIGHT]: useKeyboardControls(state => state.cam2),
-    [CAM_PRESETS.FRONT_RIGHT]: useKeyboardControls(state => state.cam3),
-    [CAM_PRESETS.FRONT]: useKeyboardControls(state => state.cam4),
-  };
+  const isCamPresetPressed: Record<string, boolean> = useMemo(() => { return {}; }, []);
+  isCamPresetPressed[CAM_PRESETS.BACK] = useKeyboardControls(state => state.cam1);
+  isCamPresetPressed[CAM_PRESETS.BACK_RIGHT] = useKeyboardControls(state => state.cam2);
+  isCamPresetPressed[CAM_PRESETS.FRONT_RIGHT] = useKeyboardControls(state => state.cam3);
+  isCamPresetPressed[CAM_PRESETS.FRONT] = useKeyboardControls(state => state.cam4);
+  const haveCamPresetsBeenPressed = Object.values(isCamPresetPressed);
 
   useEffect(() => {
     for (const camPreset of Object.values(CAM_PRESETS)) {
@@ -153,7 +153,7 @@ export function Player({
         updateCamera({ newCameraAngle: CAM_PRESET_ANGLES[camPreset] });
       }
     }
-  }, [isCamPresetPressed]);
+  }, [isCamPresetPressed, haveCamPresetsBeenPressed]);
 
   const turn = useCallback(({ delta, turnDirection } : {
     delta: number;
