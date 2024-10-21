@@ -82,12 +82,20 @@ export function OtherPlayers() {
       const fractionOfLerpCompletedPerFrame = delta / secondsBetweenTransmissions.current;
 
       window.fractionOfLerpCompletedPerFrame = fractionOfLerpCompletedPerFrame;
+      window.delta = delta;
+      window.secondsBetweenTransmissions = secondsBetweenTransmissions.current;
 
       otherPlayerXWing.position.lerpVectors(
         previousPosition.current,
         new THREE.Vector3(...latestTarget.current.position),
-        fractionOfLerpCompletedPerFrame
+        // fractionOfLerpCompletedPerFrame
+        // 0.016,
+        // delta
+        // 0.3,
+        0.5,
       );
+
+      // otherPlayerXWing.position.set(...otherPlayerPresence.position);
 
     });
 
