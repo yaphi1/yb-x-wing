@@ -5,6 +5,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { useUpdateMyPresence } from '@liveblocks/react';
 import { type Presence } from '../helpers/multiplayerConfig';
+import { isMultiplayerEnabled } from '../helpers/featureFlags';
 
 const startingSpeed = 1;
 const minSpeed = 0;
@@ -61,6 +62,8 @@ const initialCameraAngle = CAM_PRESET_ANGLES.BACK_RIGHT;
 const initialCameraDistance = 20;
 const initialCameraHeight = 8;
 
+const noop = () => {};
+
 type PlayerProps = {
   startingPosition?: THREE.Vector3;
   startingDirection?: THREE.Vector3;
@@ -71,7 +74,15 @@ export function Player({
   startingDirection = initialDirection,
 } : PlayerProps) {
   const [isPaused, setIsPaused] = useState(false);
-  const updatePresenceBroadlyTyped = useUpdateMyPresence();
+
+  /**
+   * Reason for conditional hook:
+   * 
+   * `isMultiplayerEnabled` is a constant that won't be flipped at runtime,
+   * so this is effectively not a conditional in practice.
+  */
+  // eslint-disable-next-line
+  const updatePresenceBroadlyTyped = isMultiplayerEnabled ? useUpdateMyPresence() : noop;
   const updatePresence = useCallback((updatedValue: Presence, options?: { addToHistory: boolean; }) => {
     updatePresenceBroadlyTyped(updatedValue, options);
   }, [updatePresenceBroadlyTyped]);
