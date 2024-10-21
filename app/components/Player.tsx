@@ -3,10 +3,12 @@ import { PerspectiveCamera, useKeyboardControls } from '@react-three/drei';
 import { XWing } from './XWing';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useFrame } from '@react-three/fiber';
+import { useUpdateMyPresence } from '@liveblocks/react';
+import { type Presence } from '../helpers/multiplayerConfig';
 
-const startingSpeed = 200;
+const startingSpeed = 1;
 const minSpeed = 0;
-const topSpeed = 300;
+const topSpeed = 40;
 const acceleration = 100;
 const turnStrength = 1;
 const rollAmount = 0.6;
@@ -69,8 +71,12 @@ export function Player({
   startingDirection = initialDirection,
 } : PlayerProps) {
   const [isPaused, setIsPaused] = useState(false);
+  const updatePresenceBroadlyTyped = useUpdateMyPresence();
+  const updatePresence = useCallback((updatedValue: Presence, options?: { addToHistory: boolean; }) => {
+    updatePresenceBroadlyTyped(updatedValue, options);
+  }, [updatePresenceBroadlyTyped]);
 
-  const groupRef = useRef<THREE.Group>(null!);
+  const xWingGroupRef = useRef<THREE.Group>(null!);
   const pitchAndRollBoxRef = useRef<THREE.Group>(null!);
   const swayBoxRef = useRef<THREE.Group>(null!);
   const yawBoxRef = useRef<THREE.Group>(null!);
@@ -100,12 +106,12 @@ export function Player({
     cameraDistance.current = Math.max(newCameraDistance ?? cameraDistance.current, 0);
     cameraHeight.current = newCameraHeight ?? cameraHeight.current;
     cameraRef.current.position.set(...getCameraPosition());
-    cameraRef.current.lookAt(groupRef.current.position);
+    cameraRef.current.lookAt(xWingGroupRef.current.position);
   }, [getCameraPosition]);
 
   const resetPosition = useCallback(() => {
     const { x, y, z } = startingPosition;
-    groupRef.current.position.set(x, y, z);
+    xWingGroupRef.current.position.set(x, y, z);
   }, [startingPosition]);
 
   useEffect(() => {
@@ -153,7 +159,7 @@ export function Player({
         updateCamera({ newCameraAngle: CAM_PRESET_ANGLES[camPreset] });
       }
     }
-  }, [isCamPresetPressed, haveCamPresetsBeenPressed]);
+  }, [isCamPresetPressed, haveCamPresetsBeenPressed, updateCamera]);
 
   const turn = useCallback(({ delta, turnDirection } : {
     delta: number;
@@ -162,7 +168,7 @@ export function Player({
     const turnAngle = turnStrength * delta * turnDirection;
     const rollTarget = rollAmount * turnDirection;
     direction.current.applyAxisAngle(axes.y, turnAngle);
-    groupRef.current.rotation.y += turnAngle;
+    xWingGroupRef.current.rotation.y += turnAngle;
     pitchAndRollBoxRef.current.rotation.x = THREE.MathUtils.damp(
       pitchAndRollBoxRef.current.rotation.x, rollTarget, rollSpeed, delta
     );
@@ -177,15 +183,20 @@ export function Player({
     const speedScalar = speed.current * delta;
     const copyOfDirection: THREE.Vector3 = Object.create(direction.current);
     const velocity = copyOfDirection.multiplyScalar(speedScalar);
-    groupRef.current.position.add(velocity);
-  }, []);
+    xWingGroupRef.current.position.add(velocity);
+
+    updatePresence({
+      position: xWingGroupRef.current.position.toArray(),
+      quaternion: xWingGroupRef.current.quaternion.toArray(),
+    });
+  }, [updatePresence]);
 
   const pitch = useCallback(({ delta, pitchDirection } : {
     delta: number;
     pitchDirection: PitchDirection;
   }) => {
     const isGoingDown = pitchDirection === PITCH_DIRECTION.DOWN;
-    const isAtBottom = groupRef.current.position.y <= lowestPosition;
+    const isAtBottom = xWingGroupRef.current.position.y <= lowestPosition;
     const isHittingBottom = isAtBottom && isGoingDown;
     const pitchTarget = isHittingBottom ? 0 : -pitchAmount * pitchDirection;
 
@@ -254,7 +265,7 @@ export function Player({
   });
 
   return (
-    <group ref={groupRef}>
+    <group ref={xWingGroupRef}>
       <XWing
         pitchAndRollBoxRef={pitchAndRollBoxRef}
         swayBoxRef={swayBoxRef}
