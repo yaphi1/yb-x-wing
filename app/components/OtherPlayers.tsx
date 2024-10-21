@@ -32,32 +32,6 @@ export function OtherPlayers() {
       const otherPlayerPresence = otherPlayer.presence as Presence;
       const otherPlayerXWing = otherXWings.current[otherPlayer.connectionId].current;
 
-      // if (otherPlayerPresence !== previousTransmission.current) {
-      //   const { elapsedTime } = state.clock;
-      //   // first get our data
-      //   secondsBetweenTransmissions.current = state.clock.elapsedTime - previousTransmissionTimestamp.current;
-
-      //   // then make the current into the previous
-      //   previousTransmissionTimestamp.current = state.clock.elapsedTime;
-      //   previousTransmission.current = otherPlayerPresence;
-
-      //   previousPosition.current = otherPlayerXWing.position.clone();
-      // }
-
-      // window.secondsBetweenTransmissions = secondsBetweenTransmissions.current;
-      // window.previousPosition = previousPosition.current;
-
-      // /** What fraction of the whole lerp is completed per frame */
-      // const fractionOfLerpCompletedPerFrame = delta / secondsBetweenTransmissions.current;
-
-      // otherPlayerXWing.position.lerpVectors(
-      //   previousPosition.current,
-      //   new THREE.Vector3(...otherPlayerPresence.position),
-      //   fractionOfLerpCompletedPerFrame
-      // );
-      // // otherPlayerXWing.position.set(...otherPlayerPresence.position);
-      // otherPlayerXWing.quaternion.slerp(new THREE.Quaternion(...otherPlayerPresence.quaternion), fractionOfLerpCompletedPerFrame);
-
       /*
       order of operations:
       - transmission A comes in
@@ -94,6 +68,8 @@ export function OtherPlayers() {
         // 0.3,
         0.5,
       );
+      // otherPlayerXWing.quaternion.slerp(new THREE.Quaternion(...otherPlayerPresence.quaternion), fractionOfLerpCompletedPerFrame);
+      otherPlayerXWing.quaternion.slerp(new THREE.Quaternion(...otherPlayerPresence.quaternion), 0.5);
 
       // otherPlayerXWing.position.set(...otherPlayerPresence.position);
 
@@ -116,50 +92,6 @@ export function OtherPlayers() {
       // otherPlayerXWing.quaternion.set(...otherPlayerPresence.quaternion);
     }); */
 
-
-
-    /* 
-    // player 2 only
-
-    const player2 = otherPlayers[0];
-    if (player2) {
-      const player2Presence = player2.presence as Presence;
-      const player2XWing = player2Ref.current;
-
-      if (window.positionFromPresence?.[2] !== player2Presence.position?.[2]) {
-        window.timeSinceLastUpdate = performance.now() - (window.timeSinceLastUpdate ?? 0);
-      }
-
-      window.position = player2XWing.position;
-      window.positionFromPresence = player2Presence.position;
-      window.otherXWings = otherXWings;
-
-
-      window.frameCount = ++frameCount.current;
-
-      if (previousTransmission.current !== player2Presence.position[2]) {
-        previousTransmission.current = player2Presence.position[2] ?? 0;
-        window.previousTransmission = previousTransmission.current;
-        framesBetweenSocketTransmissions.current = frameCount.current - frameCountAtTransmission.current;
-        frameCountAtTransmission.current = frameCount.current;
-
-        window.framesBetweenSocketTransmissions = framesBetweenSocketTransmissions.current;
-        window.timeBetweenSocketTransmissions = delta * framesBetweenSocketTransmissions.current;
-      }
-
-      
-      player2XWing.position.lerp(new THREE.Vector3(...player2Presence.position), fractionOfLerpCompletedPerFrame);
-      player2XWing.quaternion.slerp(new THREE.Quaternion(...player2Presence.quaternion), fractionOfLerpCompletedPerFrame);
-      
-      // player2XWing.position.lerp(new THREE.Vector3(...player2Presence.position), 0.05);
-      // player2XWing.quaternion.slerp(new THREE.Quaternion(...player2Presence.quaternion), 0.05);
-
-      // player2XWing.position.set(...player2Presence.position);
-      // player2XWing.quaternion.set(...player2Presence.quaternion);
-
-      // player2XWing.position.set(player2XWing.position.x, 40, player2XWing.position.z - 0.1);
-      // player2XWing.position.set(player2XWing.position.x, 40, player2XWing.position.z - (10 * delta));
-    } */
   });
 
   return (
