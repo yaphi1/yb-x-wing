@@ -202,13 +202,8 @@ export function Player({
     updatePresence({
       velocity: velocity.toArray(),
       position: xWingGroupRef.current.position.toArray(),
-      // quaternion: xWingGroupRef.current.quaternion.toArray(),
-      // yawBoxQuaternion: yawBoxRef.current.quaternion.toArray(),
-      // pitchAndRollBoxQuaternion: pitchAndRollBoxRef.current.quaternion.toArray(),
-      
-      rotation: xWingGroupRef.current.rotation.toArray(),
-      yawBoxRotation: yawBoxRef.current.rotation.toArray(),
-      pitchAndRollBoxRotation: pitchAndRollBoxRef.current.rotation.toArray(),
+      quaternion: xWingGroupRef.current.quaternion.toArray(),
+      pitchAndRollBoxQuaternion: pitchAndRollBoxRef.current.quaternion.toArray(),
     });
   }, [updatePresence, isPaused]);
 
