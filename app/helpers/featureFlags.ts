@@ -1,1 +1,1 @@
-export const isMultiplayerEnabled = true;
+export const isMultiplayerEnabled = false;

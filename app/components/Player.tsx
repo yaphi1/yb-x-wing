@@ -198,7 +198,13 @@ export function Player({
 
     updatePresence({
       position: xWingGroupRef.current.position.toArray(),
-      quaternion: xWingGroupRef.current.quaternion.toArray(),
+      // quaternion: xWingGroupRef.current.quaternion.toArray(),
+      // yawBoxQuaternion: yawBoxRef.current.quaternion.toArray(),
+      // pitchAndRollBoxQuaternion: pitchAndRollBoxRef.current.quaternion.toArray(),
+      
+      rotation: xWingGroupRef.current.rotation.toArray(),
+      yawBoxRotation: yawBoxRef.current.rotation.toArray(),
+      pitchAndRollBoxRotation: pitchAndRollBoxRef.current.rotation.toArray(),
     });
   }, [updatePresence]);
 
