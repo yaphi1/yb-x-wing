@@ -3,10 +3,13 @@ import { PerspectiveCamera, useKeyboardControls } from '@react-three/drei';
 import { XWing } from './XWing';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useFrame } from '@react-three/fiber';
+import { useUpdateMyPresence } from '@liveblocks/react';
+import { type Presence } from '../helpers/multiplayerConfig';
+import { isMultiplayerEnabled } from '../helpers/featureFlags';
 
-const startingSpeed = 200;
+const startingSpeed = 1;
 const minSpeed = 0;
-const topSpeed = 300;
+const topSpeed = 40;
 const acceleration = 100;
 const turnStrength = 1;
 const rollAmount = 0.6;
@@ -59,6 +62,8 @@ const initialCameraAngle = CAM_PRESET_ANGLES.BACK_RIGHT;
 const initialCameraDistance = 20;
 const initialCameraHeight = 8;
 
+const noop = () => {};
+
 type PlayerProps = {
   startingPosition?: THREE.Vector3;
   startingDirection?: THREE.Vector3;
@@ -70,7 +75,19 @@ export function Player({
 } : PlayerProps) {
   const [isPaused, setIsPaused] = useState(false);
 
-  const groupRef = useRef<THREE.Group>(null!);
+  /**
+   * Reason for conditional hook:
+   * 
+   * `isMultiplayerEnabled` is a constant that won't be flipped at runtime,
+   * so this is effectively not a conditional in practice.
+  */
+  // eslint-disable-next-line
+  const updatePresenceBroadlyTyped = isMultiplayerEnabled ? useUpdateMyPresence() : noop;
+  const updatePresence = useCallback((updatedValue: Presence, options?: { addToHistory: boolean; }) => {
+    updatePresenceBroadlyTyped(updatedValue, options);
+  }, [updatePresenceBroadlyTyped]);
+
+  const xWingGroupRef = useRef<THREE.Group>(null!);
   const pitchAndRollBoxRef = useRef<THREE.Group>(null!);
   const swayBoxRef = useRef<THREE.Group>(null!);
   const yawBoxRef = useRef<THREE.Group>(null!);
@@ -100,12 +117,12 @@ export function Player({
     cameraDistance.current = Math.max(newCameraDistance ?? cameraDistance.current, 0);
     cameraHeight.current = newCameraHeight ?? cameraHeight.current;
     cameraRef.current.position.set(...getCameraPosition());
-    cameraRef.current.lookAt(groupRef.current.position);
+    cameraRef.current.lookAt(xWingGroupRef.current.position);
   }, [getCameraPosition]);
 
   const resetPosition = useCallback(() => {
     const { x, y, z } = startingPosition;
-    groupRef.current.position.set(x, y, z);
+    xWingGroupRef.current.position.set(x, y, z);
   }, [startingPosition]);
 
   useEffect(() => {
@@ -153,7 +170,7 @@ export function Player({
         updateCamera({ newCameraAngle: CAM_PRESET_ANGLES[camPreset] });
       }
     }
-  }, [isCamPresetPressed, haveCamPresetsBeenPressed]);
+  }, [isCamPresetPressed, haveCamPresetsBeenPressed, updateCamera]);
 
   const turn = useCallback(({ delta, turnDirection } : {
     delta: number;
@@ -162,7 +179,7 @@ export function Player({
     const turnAngle = turnStrength * delta * turnDirection;
     const rollTarget = rollAmount * turnDirection;
     direction.current.applyAxisAngle(axes.y, turnAngle);
-    groupRef.current.rotation.y += turnAngle;
+    xWingGroupRef.current.rotation.y += turnAngle;
     pitchAndRollBoxRef.current.rotation.x = THREE.MathUtils.damp(
       pitchAndRollBoxRef.current.rotation.x, rollTarget, rollSpeed, delta
     );
@@ -177,15 +194,26 @@ export function Player({
     const speedScalar = speed.current * delta;
     const copyOfDirection: THREE.Vector3 = Object.create(direction.current);
     const velocity = copyOfDirection.multiplyScalar(speedScalar);
-    groupRef.current.position.add(velocity);
-  }, []);
+    xWingGroupRef.current.position.add(velocity);
+
+    updatePresence({
+      position: xWingGroupRef.current.position.toArray(),
+      // quaternion: xWingGroupRef.current.quaternion.toArray(),
+      // yawBoxQuaternion: yawBoxRef.current.quaternion.toArray(),
+      // pitchAndRollBoxQuaternion: pitchAndRollBoxRef.current.quaternion.toArray(),
+      
+      rotation: xWingGroupRef.current.rotation.toArray(),
+      yawBoxRotation: yawBoxRef.current.rotation.toArray(),
+      pitchAndRollBoxRotation: pitchAndRollBoxRef.current.rotation.toArray(),
+    });
+  }, [updatePresence]);
 
   const pitch = useCallback(({ delta, pitchDirection } : {
     delta: number;
     pitchDirection: PitchDirection;
   }) => {
     const isGoingDown = pitchDirection === PITCH_DIRECTION.DOWN;
-    const isAtBottom = groupRef.current.position.y <= lowestPosition;
+    const isAtBottom = xWingGroupRef.current.position.y <= lowestPosition;
     const isHittingBottom = isAtBottom && isGoingDown;
     const pitchTarget = isHittingBottom ? 0 : -pitchAmount * pitchDirection;
 
@@ -254,7 +282,7 @@ export function Player({
   });
 
   return (
-    <group ref={groupRef}>
+    <group ref={xWingGroupRef}>
       <XWing
         pitchAndRollBoxRef={pitchAndRollBoxRef}
         swayBoxRef={swayBoxRef}

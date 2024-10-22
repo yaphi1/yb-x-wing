@@ -126,10 +126,10 @@ export function XWing({
   yawBoxRef,
   ...groupProps
 } : {
-  xWingRef?: React.Ref<THREE.Group>;
-  pitchAndRollBoxRef?: React.Ref<THREE.Group>;
-  swayBoxRef?: React.Ref<THREE.Group>;
-  yawBoxRef?: React.Ref<THREE.Group>;
+  xWingRef?: React.MutableRefObject<THREE.Group>;
+  pitchAndRollBoxRef?: React.MutableRefObject<THREE.Group>;
+  swayBoxRef?: React.MutableRefObject<THREE.Group>;
+  yawBoxRef?: React.MutableRefObject<THREE.Group>;
 } & JSX.IntrinsicElements['group']) {
   const { nodes, materials } = useGLTF('/models/x-wing-export.glb') as GLTFResult;
   return (

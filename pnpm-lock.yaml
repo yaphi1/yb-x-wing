@@ -5,6 +5,12 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@liveblocks/client':
+    specifier: ^2.9.1
+    version: 2.9.1
+  '@liveblocks/react':
+    specifier: ^2.9.1
+    version: 2.9.1(react@18.3.1)
   '@react-three/drei':
     specifier: ^9.114.5
     version: 9.114.5(@react-three/fiber@8.17.10)(@types/react@18.3.11)(@types/three@0.169.0)(react-dom@18.3.1)(react@18.3.1)(three@0.169.0)
@@ -129,6 +135,27 @@ packages:
       wrap-ansi: 8.1.0
       wrap-ansi-cjs: /wrap-ansi@7.0.0
     dev: true
+
+  /@liveblocks/client@2.9.1:
+    resolution: {integrity: sha512-aUgRluyJszMqSvkIoFHFh7xYOymY4Aw8a9zmabbQnUtDc06iD9eS7gsOHPxd6bdIK46vkc5vdyUK7viFeunUiw==}
+    dependencies:
+      '@liveblocks/core': 2.9.1
+    dev: false
+
+  /@liveblocks/core@2.9.1:
+    resolution: {integrity: sha512-9bxo/ZfG2tTW07KKWh1hv4s6Rpu8qsZfROOKPxpYU3O6e7emmEdend1MTN05oTfSe+HmEtUXzZjuWNK5OTkxvw==}
+    dev: false
+
+  /@liveblocks/react@2.9.1(react@18.3.1):
+    resolution: {integrity: sha512-JoYnZ+LDDmN/XsCI9s1HCDhbATXtMLQPcqS/04AtOlzyFBLHTEQHScBtsy+cp3ImBGOsJ4aLNjnnTlWitrf6KQ==}
+    peerDependencies:
+      react: ^16.14.0 || ^17 || ^18
+    dependencies:
+      '@liveblocks/client': 2.9.1
+      '@liveblocks/core': 2.9.1
+      react: 18.3.1
+      use-sync-external-store: 1.2.2(react@18.3.1)
+    dev: false
 
   /@mediapipe/tasks-vision@0.10.8:
     resolution: {integrity: sha512-Rp7ll8BHrKB3wXaRFKhrltwZl1CiXGdibPxuWXvqGnKTnv8fqa/nvftYNuSbf+pbJWKYCXdBtYTITdAUTGGh0Q==}

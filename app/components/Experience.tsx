@@ -6,6 +6,8 @@ import { Environment } from '@react-three/drei';
 import { Grid } from './Grid';
 import { Keyboard } from './Keyboard';
 import { Player } from './Player';
+import { isMultiplayerEnabled } from '../helpers/featureFlags';
+import { OtherPlayers } from './OtherPlayers';
 
 export function Experience() {
   return (
@@ -14,6 +16,7 @@ export function Experience() {
         <Environment preset="dawn" />
         <Grid />
         <Player />
+        {isMultiplayerEnabled && <OtherPlayers />}
       </Canvas>
     </Keyboard>
   );
