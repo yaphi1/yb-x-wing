@@ -196,10 +196,11 @@ export function Player({
   const moveXWing = useCallback(({ delta } : { delta: number; }) => {
     const speedScalar = speed.current * delta;
     const copyOfDirection: THREE.Vector3 = Object.create(direction.current);
-    const velocity = copyOfDirection.multiplyScalar(speedScalar);
+    const velocity = isPaused ? new THREE.Vector3(0, 0, 0) : copyOfDirection.multiplyScalar(speedScalar);
     xWingGroupRef.current.position.add(velocity);
 
     updatePresence({
+      velocity: velocity.toArray(),
       position: xWingGroupRef.current.position.toArray(),
       // quaternion: xWingGroupRef.current.quaternion.toArray(),
       // yawBoxQuaternion: yawBoxRef.current.quaternion.toArray(),
@@ -209,7 +210,7 @@ export function Player({
       yawBoxRotation: yawBoxRef.current.rotation.toArray(),
       pitchAndRollBoxRotation: pitchAndRollBoxRef.current.rotation.toArray(),
     });
-  }, [updatePresence]);
+  }, [updatePresence, isPaused]);
 
   const pitch = useCallback(({ delta, pitchDirection } : {
     delta: number;
@@ -234,9 +235,9 @@ export function Player({
 
   useFrame((state, delta) => {
     sway({ elapsedTime: state.clock.elapsedTime });
-    if (!isPaused) {
+    // if (!isPaused) {
       moveXWing({ delta });
-    }
+    // }
     if (isLeftPressed) {
       turn({ delta, turnDirection: TURN_DIRECTION.LEFT });
     }

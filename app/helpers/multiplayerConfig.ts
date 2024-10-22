@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 
 export type Presence = {
+  velocity: [number, number, number];
   position: [number, number, number];
   // quaternion: [number, number, number, number];
   // yawBoxQuaternion: [number, number, number, number];
@@ -12,6 +13,7 @@ export type Presence = {
 };
 
 export const initialPresence: Presence = {
+  velocity: [0, 0, 0],
   position: [0, 0, 0],
   // quaternion: [0, 0, 0, 1],
   // yawBoxQuaternion: [0, 0, 0, 1],

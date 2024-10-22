@@ -19,6 +19,8 @@ const compromiseLerpIncrement = 0.5;
  * Stuff needs to change before this becomes usable:
  * - Refs need to be on a per-player basis; right now, only players 1 and 2 are supported.
  * - Animation jitter needs to be fixed for other players (non-player-1)
+ *  - Fixed by using velocity
+ *  - Maybe only adjust position if velocity has changed? Nah syncing the position every so often is fine.
  * - Pitch and roll box axes need to be fixed for other players
  */
 export function OtherPlayers() {
@@ -33,6 +35,8 @@ export function OtherPlayers() {
   const previousTransmissionTimestamp = useRef(0);
   const secondsBetweenTransmissions = useRef(0.1);
   const previousPosition = useRef<THREE.Vector3>(new THREE.Vector3());
+
+  const frameCount = useRef(0);
 
   useFrame((state, delta) => {
 
@@ -69,15 +73,21 @@ export function OtherPlayers() {
       // window.rotation = otherPlayerPresence.rotation;
       // window.pitchAndRollBoxRotation = otherPlayerPresence.pitchAndRollBoxRotation;
 
-      otherPlayerXWing.position.lerpVectors(
-        previousPosition.current,
-        new THREE.Vector3(...latestTarget.current.position),
-        // fractionOfLerpCompletedPerFrame
-        // 0.016,
-        // delta
-        // 0.3,
-        compromiseLerpIncrement,
-      );
+      // otherPlayerXWing.position.lerpVectors(
+      //   previousPosition.current,
+      //   new THREE.Vector3(...latestTarget.current.position),
+      //   // fractionOfLerpCompletedPerFrame
+      //   // 0.016,
+      //   // delta
+      //   // 0.3,
+      //   compromiseLerpIncrement,
+      // );
+
+      if (frameCount.current % (5 * 60) === 0) {
+        otherPlayerXWing.position.set(...otherPlayerPresence.position);
+      }
+      otherPlayerXWing.position.add(new THREE.Vector3(...otherPlayerPresence.velocity));
+
       // otherPlayerXWing.quaternion.slerp(new THREE.Quaternion(...otherPlayerPresence.quaternion), fractionOfLerpCompletedPerFrame);
       
       // otherPlayerXWing.quaternion.slerp(new THREE.Quaternion(...otherPlayerPresence.quaternion), compromiseLerpIncrement);
@@ -99,6 +109,7 @@ export function OtherPlayers() {
       // otherPlayerXWing.position.set(...otherPlayerPresence.position);
     });
 
+    frameCount.current++;
   });
 
   return (
