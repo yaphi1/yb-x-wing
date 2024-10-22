@@ -5,7 +5,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { JsonObject, useUpdateMyPresence } from '@liveblocks/react';
 import { type Presence } from '../helpers/multiplayerConfig';
-import { isMultiplayerEnabled } from '../helpers/featureFlags';
+import { isMultiplayerEnabled } from '../helpers/globalFlags';
 
 const startingSpeed = 1;
 const minSpeed = 0;

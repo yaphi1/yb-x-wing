@@ -1,5 +1,3 @@
-import * as THREE from 'three';
-
 export type Presence = {
   velocity: [number, number, number];
   position: [number, number, number];

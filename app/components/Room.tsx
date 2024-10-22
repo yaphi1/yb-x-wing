@@ -7,7 +7,7 @@ import {
   ClientSideSuspense,
   JsonObject,
 } from '@liveblocks/react/suspense';
-import { isMultiplayerEnabled } from '../helpers/featureFlags';
+import { isMultiplayerEnabled } from '../helpers/globalFlags';
 import { initialPresence } from '../helpers/multiplayerConfig';
 
 export function RoomWithoutWrapper({ children }: { children: ReactNode }) {

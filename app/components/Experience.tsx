@@ -6,7 +6,7 @@ import { Environment } from '@react-three/drei';
 import { Grid } from './Grid';
 import { Keyboard } from './Keyboard';
 import { Player } from './Player';
-import { isMultiplayerEnabled } from '../helpers/featureFlags';
+import { isDebugMode, isMultiplayerEnabled } from '../helpers/globalFlags';
 import { OtherPlayers } from './OtherPlayers';
 import { Sand } from './Sand';
 
@@ -15,7 +15,7 @@ export function Experience() {
     <Keyboard>
       <Canvas>
         <Environment preset="dawn" />
-        {/* <Grid /> */}
+        {isDebugMode && <Grid />}
         <Sand />
         <Sand position={[1000, 0, 0]} />
         <Sand position={[-1000, 0, 0]} />
