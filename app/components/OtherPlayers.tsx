@@ -18,10 +18,7 @@ const compromiseLerpIncrement = 0.5;
 /**
  * Stuff needs to change before this becomes usable:
  * - Refs need to be on a per-player basis; right now, only players 1 and 2 are supported.
- * - Animation jitter needs to be fixed for other players (non-player-1)
- *  - Fixed by using velocity
- *  - Maybe only adjust position if velocity has changed? Nah syncing the position every so often is fine.
- * - Pitch and roll box axes need to be fixed for other players
+ * - Smooth out the turning
  */
 export function OtherPlayers() {
   const otherPlayers = useOthers();
@@ -73,16 +70,6 @@ export function OtherPlayers() {
       // window.rotation = otherPlayerPresence.rotation;
       // window.pitchAndRollBoxRotation = otherPlayerPresence.pitchAndRollBoxRotation;
 
-      // otherPlayerXWing.position.lerpVectors(
-      //   previousPosition.current,
-      //   new THREE.Vector3(...latestTarget.current.position),
-      //   // fractionOfLerpCompletedPerFrame
-      //   // 0.016,
-      //   // delta
-      //   // 0.3,
-      //   compromiseLerpIncrement,
-      // );
-
       if (frameCount.current % (5 * 60) === 0) {
         otherPlayerXWing.position.set(...otherPlayerPresence.position);
       }
@@ -94,19 +81,8 @@ export function OtherPlayers() {
       // otherYawBox.quaternion.slerp(new THREE.Quaternion(...otherPlayerPresence.yawBoxQuaternion), compromiseLerpIncrement);
       // otherPitchAndRollBox.quaternion.slerp(new THREE.Quaternion(...otherPlayerPresence.pitchAndRollBoxQuaternion), compromiseLerpIncrement);
 
-      // otherPlayerXWing.rotation.set(...otherPlayerPresence.rotation);
-      otherPlayerXWing.rotation.y = otherPlayerPresence.rotation[1];
-
-      // not sure how these axes got so turned around
-      // seems to be using global x and local z for some reason
-      const hackyCoefficient = Math.sign(-Math.cos(otherPlayerXWing.rotation.y)); // I'd like to emphasize how bad of a temporary workaround this is
-      otherPitchAndRollBox.rotation.x = hackyCoefficient * otherPlayerPresence.pitchAndRollBoxRotation[2];
-      otherPitchAndRollBox.rotation.z = otherPlayerPresence.pitchAndRollBoxRotation[0];
-
-      // otherPitchAndRollBox.rotation.x = otherPlayerPresence.pitchAndRollBoxRotation[0];
-      // otherPitchAndRollBox.rotation.z = otherPlayerPresence.pitchAndRollBoxRotation[2];
-
-      // otherPlayerXWing.position.set(...otherPlayerPresence.position);
+      otherPlayerXWing.rotation.set(...otherPlayerPresence.rotation);
+      otherPitchAndRollBox.rotation.set(...otherPlayerPresence.pitchAndRollBoxRotation);
     });
 
     frameCount.current++;
@@ -117,11 +93,11 @@ export function OtherPlayers() {
       {otherPlayers.map(otherPlayer => (
         <group
           key={otherPlayer.connectionId}
-          ref={otherXWings.current[otherPlayer.connectionId] ??= emptyRef}
+          ref={otherXWings.current[otherPlayer.connectionId] ??= {...emptyRef}}
         >
           <XWing
-            yawBoxRef={otherYawBoxes.current[otherPlayer.connectionId] ??= emptyRef}
-            pitchAndRollBoxRef={otherPitchAndRollBoxes.current[otherPlayer.connectionId] ??= emptyRef}
+            pitchAndRollBoxRef={otherPitchAndRollBoxes.current[otherPlayer.connectionId] ??= {...emptyRef}}
+            yawBoxRef={otherYawBoxes.current[otherPlayer.connectionId] ??= {...emptyRef}}
           />
         </group>
       ))}

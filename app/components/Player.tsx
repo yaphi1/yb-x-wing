@@ -235,9 +235,9 @@ export function Player({
 
   useFrame((state, delta) => {
     sway({ elapsedTime: state.clock.elapsedTime });
-    // if (!isPaused) {
-      moveXWing({ delta });
-    // }
+
+    moveXWing({ delta });
+
     if (isLeftPressed) {
       turn({ delta, turnDirection: TURN_DIRECTION.LEFT });
     }

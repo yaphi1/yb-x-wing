@@ -133,7 +133,7 @@ export function XWing({
 } & JSX.IntrinsicElements['group']) {
   const { nodes, materials } = useGLTF('/models/x-wing-export.glb') as GLTFResult;
   return (
-    <group {...groupProps} ref={xWingRef} dispose={null}>
+    <group name="x_wing" {...groupProps} ref={xWingRef} dispose={null}>
       <group name="Scene" rotation={STARTING_DIRECTION_CORRECTION}>
         <group name="yaw_box" ref={yawBoxRef}>
           <group name="pitch_and_roll_box" ref={pitchAndRollBoxRef}>
