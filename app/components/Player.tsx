@@ -9,7 +9,7 @@ import { isMultiplayerEnabled } from '../helpers/featureFlags';
 
 const startingSpeed = 1;
 const minSpeed = 0;
-const topSpeed = 40;
+const topSpeed = 200;
 const acceleration = 100;
 const turnStrength = 1;
 const rollAmount = 0.6;
