@@ -63,11 +63,11 @@ export function OtherPlayers() {
 
       const fractionOfLerpCompletedPerFrame = delta / secondsBetweenTransmissions.current;
 
-      window.fractionOfLerpCompletedPerFrame = fractionOfLerpCompletedPerFrame;
-      window.delta = delta;
-      window.secondsBetweenTransmissions = secondsBetweenTransmissions.current;
-      window.rotation = otherPlayerPresence.rotation;
-      window.pitchAndRollBoxRotation = otherPlayerPresence.pitchAndRollBoxRotation;
+      // window.fractionOfLerpCompletedPerFrame = fractionOfLerpCompletedPerFrame;
+      // window.delta = delta;
+      // window.secondsBetweenTransmissions = secondsBetweenTransmissions.current;
+      // window.rotation = otherPlayerPresence.rotation;
+      // window.pitchAndRollBoxRotation = otherPlayerPresence.pitchAndRollBoxRotation;
 
       otherPlayerXWing.position.lerpVectors(
         previousPosition.current,

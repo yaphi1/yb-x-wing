@@ -5,6 +5,7 @@ import {
   LiveblocksProvider,
   RoomProvider,
   ClientSideSuspense,
+  JsonObject,
 } from '@liveblocks/react/suspense';
 import { isMultiplayerEnabled } from '../helpers/featureFlags';
 import { initialPresence } from '../helpers/multiplayerConfig';
@@ -14,7 +15,7 @@ export function RoomWithoutWrapper({ children }: { children: ReactNode }) {
     <LiveblocksProvider throttle={16} publicApiKey="pk_dev_VSQ8XgsEo_gHGV05fm021iUDLbCs-eJ4Awy8fvUor2L4swGGpkwVDa7r4tK_qSUn">
       <RoomProvider
         id="main-room"
-        initialPresence={initialPresence}
+        initialPresence={initialPresence as JsonObject}
       >
         <ClientSideSuspense fallback={<div>Loading…</div>}>
           {children}

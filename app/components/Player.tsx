@@ -3,7 +3,7 @@ import { PerspectiveCamera, useKeyboardControls } from '@react-three/drei';
 import { XWing } from './XWing';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { useUpdateMyPresence } from '@liveblocks/react';
+import { JsonObject, useUpdateMyPresence } from '@liveblocks/react';
 import { type Presence } from '../helpers/multiplayerConfig';
 import { isMultiplayerEnabled } from '../helpers/featureFlags';
 
@@ -84,7 +84,10 @@ export function Player({
   // eslint-disable-next-line
   const updatePresenceBroadlyTyped = isMultiplayerEnabled ? useUpdateMyPresence() : noop;
   const updatePresence = useCallback((updatedValue: Presence, options?: { addToHistory: boolean; }) => {
-    updatePresenceBroadlyTyped(updatedValue, options);
+    // This type assertion is because the EulerTuple is just an array of numbers and strings but
+    // the LiveBlocks JsonObject doesn't know that even though it accepts arrays of strings and numbers
+    const compatibleValue = updatedValue as Partial<JsonObject>;
+    updatePresenceBroadlyTyped(compatibleValue, options);
   }, [updatePresenceBroadlyTyped]);
 
   const xWingGroupRef = useRef<THREE.Group>(null!);
