@@ -6,6 +6,7 @@ import { useFrame } from '@react-three/fiber';
 import { JsonObject, useUpdateMyPresence } from '@liveblocks/react';
 import { type Presence } from '../helpers/multiplayerConfig';
 import { isMultiplayerEnabled } from '../helpers/globalFlags';
+import { boundaryDistance, isOutOfBounds } from './Ground';
 
 const startingSpeed = 1;
 const minSpeed = 0;
@@ -198,6 +199,13 @@ export function Player({
     const copyOfDirection: THREE.Vector3 = Object.create(direction.current);
     const velocity = isPaused ? new THREE.Vector3(0, 0, 0) : copyOfDirection.multiplyScalar(speedScalar);
     xWingGroupRef.current.position.add(velocity);
+    if (isOutOfBounds(xWingGroupRef.current.position.x)) {
+      xWingGroupRef.current.position.x = Math.sign(xWingGroupRef.current.position.x) * -boundaryDistance;
+    }
+    if (isOutOfBounds(xWingGroupRef.current.position.z)) {
+      xWingGroupRef.current.position.z = Math.sign(xWingGroupRef.current.position.z) * -boundaryDistance;
+    }
+
 
     updatePresence({
       velocity: velocity.toArray(),

@@ -1,26 +1,34 @@
 'use client';
 
-import React from 'react';
-import { Canvas } from '@react-three/fiber';
-import { Environment } from '@react-three/drei';
-import { Grid } from './Grid';
+import * as THREE from 'three';
+import React, { useEffect } from 'react';
+import { Canvas, useThree } from '@react-three/fiber';
+import { Environment, Sky } from '@react-three/drei';
 import { Keyboard } from './Keyboard';
 import { Player } from './Player';
-import { isDebugMode, isMultiplayerEnabled } from '../helpers/globalFlags';
+import { isMultiplayerEnabled } from '../helpers/globalFlags';
 import { OtherPlayers } from './OtherPlayers';
-import { Sand } from './Sand';
+import { Ground } from './Ground';
+
+function Fog() {
+  const { scene } = useThree()
+  
+  useEffect(() => {
+    scene.fog = new THREE.Fog('#ffffff', 200, 2000);
+  }, [scene])
+
+  return null;
+}
 
 export function Experience() {
   return (
     <Keyboard>
       <Canvas>
         <Environment preset="dawn" />
-        {isDebugMode && <Grid />}
-        <Sand />
-        <Sand position={[1000, 0, 0]} />
-        <Sand position={[-1000, 0, 0]} />
-        <Sand position={[0, 0, 1000]} />
-        <Sand position={[1000, 0, 1000]} />
+        {/* <Fog color="#ffffff" near={1} far={10} /> */}
+        <Fog />
+        {/* <Sky /> */}
+        <Ground />
         <Player />
         {isMultiplayerEnabled && <OtherPlayers />}
       </Canvas>

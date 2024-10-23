@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "YB X-Wing Sim",
+  title: "Yaphi's X-Wing Sim",
   description: "An x-wing simulator",
 };
 
