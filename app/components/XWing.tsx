@@ -8,6 +8,7 @@ import React from 'react';
 import { useGLTF } from '@react-three/drei';
 import { GLTF } from 'three-stdlib';
 import { type WingRefs } from '../helpers/wingHelpers';
+import { EffectComposer, SelectiveBloom } from '@react-three/postprocessing';
 
 const STARTING_DIRECTION_CORRECTION = new THREE.Euler(0, -0.5 * Math.PI, 0);
 
@@ -193,6 +194,39 @@ type GLTFResult = GLTF & {
 }
 
 type GroupRef = React.MutableRefObject<THREE.Group>;
+type MeshRef = React.MutableRefObject<THREE.Mesh>;
+
+function JetFlame({ flameRef } : {
+  flameRef: MeshRef;
+}) {
+  const radiusTop = 0.3;
+  const radiusBottom = 0.2;
+  const height = 2;
+  const radialSegments = 32;
+  const heightSegments = 1;
+  const isOpenEnded = false;
+  return (
+    <mesh ref={flameRef} position={[3.6, 0.9, -1.6]} rotation-z={0.5 * Math.PI}>
+      <cylinderGeometry args={[
+        radiusTop,
+        radiusBottom,
+        height,
+        radialSegments,
+        heightSegments,
+        isOpenEnded,
+      ]} />
+      <meshStandardMaterial
+        color={'#ffffff'}
+        emissive={'#0098db'}
+        transparent={true}
+        opacity={0.1}
+        emissiveIntensity={30}
+        toneMapped={false}
+        side={THREE.DoubleSide}
+      />
+    </mesh>
+  );
+}
 
 export function XWing({
   xWingRef,
@@ -209,14 +243,30 @@ export function XWing({
   wingRefs?: WingRefs;
 } & JSX.IntrinsicElements['group']) {
   const { nodes, materials } = useGLTF('/models/x-wing-openable.glb') as GLTFResult;
+
+  const jetRefs = [
+    React.useRef<THREE.Mesh>(null!),
+    React.useRef<THREE.Mesh>(null!),
+    React.useRef<THREE.Mesh>(null!),
+    React.useRef<THREE.Mesh>(null!),
+  ];
+
   return (
     <group name="x_wing" {...groupProps} ref={xWingRef} dispose={null}>
+      <EffectComposer multisampling={0}>
+        <SelectiveBloom
+          mipmapBlur
+          selection={[ jetRefs[0] ]}
+        />
+      </EffectComposer>
+
       <group name="Scene" rotation={STARTING_DIRECTION_CORRECTION}>
         <group name="yaw_box" ref={yawBoxRef}>
           <group name="pitch_and_roll_box" ref={pitchAndRollBoxRef}>
             <group name="sway_box" ref={swayBoxRef}>
               <group name="new_model">
                 <group name="wing_top_right" ref={wingRefs?.topRight} position={[3.414, 0, 0]}>
+                  <JetFlame flameRef={jetRefs[0]} />
                   <mesh
                     name="Cube044"
                     castShadow

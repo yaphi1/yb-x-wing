@@ -10,11 +10,11 @@ import { OtherPlayers } from './OtherPlayers';
 import { Ground } from './Ground';
 import { Fog } from './Fog';
 
-
 export function Experience() {
   return (
     <Keyboard>
       <Canvas>
+        <color args={ [ '#ffe8e8' ] } attach="background" />
         <Environment preset="dawn" />
         <Fog color="#ffe8e8" near={200} far={2000} />
         <Ground />
