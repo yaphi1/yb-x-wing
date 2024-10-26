@@ -1,6 +1,8 @@
 to do
 
+- show controls
 - make players start in different places
 - clouds?
 - jets?
-- opening the wings
+- x-wing color changer
+- collision detection

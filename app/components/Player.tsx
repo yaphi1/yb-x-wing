@@ -7,6 +7,7 @@ import { JsonObject, useUpdateMyPresence } from '@liveblocks/react';
 import { type Presence } from '../helpers/multiplayerConfig';
 import { isMultiplayerEnabled } from '../helpers/globalFlags';
 import { boundaryDistance, isOutOfBounds } from './Ground';
+import { updateWings, type WingRefs } from '../helpers/wingHelpers';
 
 const startingSpeed = 1;
 const minSpeed = 0;
@@ -75,6 +76,7 @@ export function Player({
   startingDirection = initialDirection,
 } : PlayerProps) {
   const [isPaused, setIsPaused] = useState(false);
+  const [areWingsOpen, setAreWingsOpen] = useState(false);
 
   /**
    * Reason for conditional hook:
@@ -95,6 +97,12 @@ export function Player({
   const pitchAndRollBoxRef = useRef<THREE.Group>(null!);
   const swayBoxRef = useRef<THREE.Group>(null!);
   const yawBoxRef = useRef<THREE.Group>(null!);
+  const wingRefs: WingRefs = {
+    topLeft: useRef<THREE.Group>(null!),
+    bottomLeft: useRef<THREE.Group>(null!),
+    topRight: useRef<THREE.Group>(null!),
+    bottomRight: useRef<THREE.Group>(null!),
+  };
 
   const speed = useRef(startingSpeed);
   const direction = useRef(startingDirection);
@@ -154,12 +162,19 @@ export function Player({
 
   const isResetPressed = useKeyboardControls(state => state.reset);
   const isPausePressed = useKeyboardControls(state => state.pause);
+  const isToggleWingsPressed = useKeyboardControls(state => state.toggleWings);
 
   useEffect(() => {
     if (isPausePressed) {
       setIsPaused((wasPaused) => !wasPaused);
     }
   }, [isPausePressed]);
+  
+  useEffect(() => {
+    if (isToggleWingsPressed) {
+      setAreWingsOpen((wereWingsOpen) => !wereWingsOpen);
+    }
+  }, [isToggleWingsPressed]);
   
   const isCamPresetPressed: Record<string, boolean> = useMemo(() => { return {}; }, []);
   isCamPresetPressed[CAM_PRESETS.BACK] = useKeyboardControls(state => state.cam1);
@@ -237,9 +252,10 @@ export function Player({
   }, []);
 
   useFrame((state, delta) => {
-    sway({ elapsedTime: state.clock.elapsedTime });
-
     moveXWing({ delta });
+
+    sway({ elapsedTime: state.clock.elapsedTime });
+    updateWings({ wingRefs, areWingsOpen, delta });
 
     if (isLeftPressed) {
       turn({ delta, turnDirection: TURN_DIRECTION.LEFT });
@@ -294,6 +310,7 @@ export function Player({
         pitchAndRollBoxRef={pitchAndRollBoxRef}
         swayBoxRef={swayBoxRef}
         yawBoxRef={yawBoxRef}
+        wingRefs={wingRefs}
       />
       <PerspectiveCamera ref={cameraRef} makeDefault fov={50} />
     </group>
