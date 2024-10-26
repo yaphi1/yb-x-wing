@@ -3,6 +3,7 @@ export type Presence = {
   position: [number, number, number];
   quaternion: [number, number, number, number];
   pitchAndRollBoxQuaternion: [number, number, number, number];
+  areWingsOpen: boolean;
 };
 
 export const initialPresence: Presence = {
@@ -10,4 +11,5 @@ export const initialPresence: Presence = {
   position: [0, 0, 0],
   quaternion: [0, 0, 0, 1],
   pitchAndRollBoxQuaternion: [0, 0, 0, 1],
+  areWingsOpen: false,
 };

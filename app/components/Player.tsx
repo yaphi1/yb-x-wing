@@ -221,14 +221,14 @@ export function Player({
       xWingGroupRef.current.position.z = Math.sign(xWingGroupRef.current.position.z) * -boundaryDistance;
     }
 
-
     updatePresence({
       velocity: velocity.toArray(),
       position: xWingGroupRef.current.position.toArray(),
       quaternion: xWingGroupRef.current.quaternion.toArray(),
       pitchAndRollBoxQuaternion: pitchAndRollBoxRef.current.quaternion.toArray(),
+      areWingsOpen,
     });
-  }, [updatePresence, isPaused]);
+  }, [updatePresence, isPaused, areWingsOpen]);
 
   const pitch = useCallback(({ delta, pitchDirection } : {
     delta: number;
