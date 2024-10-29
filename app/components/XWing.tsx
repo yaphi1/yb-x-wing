@@ -9,6 +9,7 @@ import { useGLTF } from '@react-three/drei';
 import { GLTF } from 'three-stdlib';
 import { type WingRefs } from '../helpers/wingHelpers';
 import { EffectComposer, SelectiveBloom } from '@react-three/postprocessing';
+import { KernelSize } from 'postprocessing';
 
 const STARTING_DIRECTION_CORRECTION = new THREE.Euler(0, -0.5 * Math.PI, 0);
 
@@ -196,8 +197,20 @@ type GLTFResult = GLTF & {
 type GroupRef = React.MutableRefObject<THREE.Group>;
 type MeshRef = React.MutableRefObject<THREE.Mesh>;
 
-function JetFlame({ flameRef } : {
+type JetPlacementCoefficients = {
+  y: number;
+  z: number;
+};
+const JetPlacement: Record<string, JetPlacementCoefficients> = {
+  topRight: { y: 1, z: -1 },
+  topLeft: { y: 1, z: 1 },
+  bottomRight: { y: -1, z: -1 },
+  bottomLeft: { y: -1, z: 1 },
+} as const;
+
+function JetFlame({ flameRef, jetPlacement } : {
   flameRef: MeshRef;
+  jetPlacement: JetPlacementCoefficients;
 }) {
   const radiusTop = 0.3;
   const radiusBottom = 0.2;
@@ -205,8 +218,17 @@ function JetFlame({ flameRef } : {
   const radialSegments = 32;
   const heightSegments = 1;
   const isOpenEnded = false;
+
   return (
-    <mesh ref={flameRef} position={[3.6, 0.9, -1.6]} rotation-z={0.5 * Math.PI}>
+    <mesh
+      ref={flameRef}
+      position={[
+        3.6,
+        jetPlacement.y * 0.9,
+        jetPlacement.z * 1.6,
+      ]}
+      rotation-z={0.5 * Math.PI}
+    >
       <cylinderGeometry args={[
         radiusTop,
         radiusBottom,
@@ -219,7 +241,7 @@ function JetFlame({ flameRef } : {
         color={'#ffffff'}
         emissive={'#0098db'}
         transparent={true}
-        opacity={0.1}
+        opacity={0.3}
         emissiveIntensity={30}
         toneMapped={false}
         side={THREE.DoubleSide}
@@ -227,6 +249,27 @@ function JetFlame({ flameRef } : {
     </mesh>
   );
 }
+
+const Bloom = React.memo(({ jetRefs } : {
+  jetRefs: Array<MeshRef>;
+}) => {
+  /** This only exists to appease the SelectiveBloom component */
+  const dummyLightRef = React.useRef(null!);
+
+  return (
+    <>
+      <pointLight ref={dummyLightRef} position={[0, 0, 0]} intensity={0} />
+      <EffectComposer multisampling={0}>
+        <SelectiveBloom
+          lights={[dummyLightRef]}
+          mipmapBlur
+          selection={jetRefs}
+          kernelSize={KernelSize.VERY_SMALL}
+        />
+      </EffectComposer>
+    </>
+  );
+});
 
 export function XWing({
   xWingRef,
@@ -253,12 +296,7 @@ export function XWing({
 
   return (
     <group name="x_wing" {...groupProps} ref={xWingRef} dispose={null}>
-      <EffectComposer multisampling={0}>
-        <SelectiveBloom
-          mipmapBlur
-          selection={[ jetRefs[0] ]}
-        />
-      </EffectComposer>
+      <Bloom jetRefs={jetRefs} />
 
       <group name="Scene" rotation={STARTING_DIRECTION_CORRECTION}>
         <group name="yaw_box" ref={yawBoxRef}>
@@ -266,7 +304,7 @@ export function XWing({
             <group name="sway_box" ref={swayBoxRef}>
               <group name="new_model">
                 <group name="wing_top_right" ref={wingRefs?.topRight} position={[3.414, 0, 0]}>
-                  <JetFlame flameRef={jetRefs[0]} />
+                  <JetFlame flameRef={jetRefs[0]} jetPlacement={JetPlacement.topRight}/>
                   <mesh
                     name="Cube044"
                     castShadow
@@ -479,6 +517,7 @@ export function XWing({
                   />
                 </group>
                 <group name="wing_bottom_right" ref={wingRefs?.bottomRight} position={[3.414, 0, 0]}>
+                  <JetFlame flameRef={jetRefs[1]} jetPlacement={JetPlacement.bottomRight}/>
                   <mesh
                     name="Cube059"
                     castShadow
@@ -691,6 +730,7 @@ export function XWing({
                   />
                 </group>
                 <group name="wing_top_left" ref={wingRefs?.topLeft} position={[3.414, 0, 0]}>
+                  <JetFlame flameRef={jetRefs[2]} jetPlacement={JetPlacement.topLeft}/>
                   <mesh
                     name="Cube064"
                     castShadow
@@ -903,6 +943,7 @@ export function XWing({
                   />
                 </group>
                 <group name="wing_bottom_left" ref={wingRefs?.bottomLeft} position={[3.414, 0, 0]}>
+                  <JetFlame flameRef={jetRefs[3]} jetPlacement={JetPlacement.bottomLeft}/>
                   <mesh
                     name="Cube069"
                     castShadow
