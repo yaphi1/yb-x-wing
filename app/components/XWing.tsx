@@ -10,6 +10,8 @@ import { GLTF } from 'three-stdlib';
 import { type WingRefs } from '../helpers/wingHelpers';
 import { EffectComposer, SelectiveBloom } from '@react-three/postprocessing';
 import { KernelSize } from 'postprocessing';
+import { FakeGlowMaterial } from './FakeGlowMaterial';
+import { useFrame } from '@react-three/fiber';
 
 const STARTING_DIRECTION_CORRECTION = new THREE.Euler(0, -0.5 * Math.PI, 0);
 
@@ -220,33 +222,41 @@ function JetFlame({ flameRef, jetPlacement } : {
   const isOpenEnded = false;
 
   return (
-    <mesh
-      ref={flameRef}
-      position={[
-        3.6,
-        jetPlacement.y * 0.9,
-        jetPlacement.z * 1.6,
-      ]}
-      rotation-z={0.5 * Math.PI}
-    >
-      <cylinderGeometry args={[
-        radiusTop,
-        radiusBottom,
-        height,
-        radialSegments,
-        heightSegments,
-        isOpenEnded,
-      ]} />
-      <meshStandardMaterial
-        color={'#ffffff'}
-        emissive={'#0098db'}
-        transparent={true}
-        opacity={0.3}
-        emissiveIntensity={30}
-        toneMapped={false}
-        side={THREE.DoubleSide}
-      />
-    </mesh>
+    <>
+      <mesh
+        ref={flameRef}
+        position={[
+          // 4.5,
+          3.4,
+          jetPlacement.y * 0.9,
+          jetPlacement.z * 1.6,
+        ]}
+        // scale={[4,1,1]}
+      >
+        <sphereGeometry args={[0.4]} />
+        <FakeGlowMaterial
+          glowColor="#0098db"
+          glowInternalRadius={1}
+        />
+        {/* <meshStandardMaterial color={'red'} /> */}
+        {/* <meshStandardMaterial
+          color={'#0098db'}
+          transparent={true}
+          opacity={0.2}
+        /> */}
+      </mesh>
+      {/* <mesh
+        ref={flameRef}
+        position={[
+          4,
+          jetPlacement.y * 0.9,
+          jetPlacement.z * 1.6,
+        ]}
+      >
+        <sphereGeometry args={[1]} />
+        <FakeGlowMaterial glowColor="#0098db" />
+      </mesh> */}
+    </>
   );
 }
 
@@ -294,9 +304,18 @@ export function XWing({
     React.useRef<THREE.Mesh>(null!),
   ];
 
+  useFrame((state) => {
+    const jetLength = 3;
+    const scale = 0.05 * Math.sin(30 * state.clock.elapsedTime) + 0.8;
+    // console.log(scale);
+    jetRefs.forEach(jetRef => {
+      jetRef.current.scale.set(jetLength * scale, scale, scale);
+    });
+  });
+
   return (
     <group name="x_wing" {...groupProps} ref={xWingRef} dispose={null}>
-      <Bloom jetRefs={jetRefs} />
+      {/* <Bloom jetRefs={jetRefs} /> */}
 
       <group name="Scene" rotation={STARTING_DIRECTION_CORRECTION}>
         <group name="yaw_box" ref={yawBoxRef}>
