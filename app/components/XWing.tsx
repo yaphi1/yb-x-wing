@@ -326,29 +326,21 @@ export function XWing({
                   <JetFlame flameRef={jetRefs[0]} jetPlacement={JetPlacement.topRight}/>
                   <mesh
                     name="Cube044"
-                    castShadow
-                    receiveShadow
                     geometry={nodes.Cube044.geometry}
                     material={materials.body_material}
                   />
                   <mesh
                     name="Cube044_1"
-                    castShadow
-                    receiveShadow
                     geometry={nodes.Cube044_1.geometry}
                     material={materials.stripes}
                   />
                   <mesh
                     name="Cube044_2"
-                    castShadow
-                    receiveShadow
                     geometry={nodes.Cube044_2.geometry}
                     material={materials.body_accent}
                   />
                   <mesh
                     name="engine_front_inner003"
-                    castShadow
-                    receiveShadow
                     geometry={nodes.engine_front_inner003.geometry}
                     material={materials.accent}
                     position={[-0.503, 0.526, 1.514]}
@@ -360,22 +352,16 @@ export function XWing({
                     rotation={[0, 0, -Math.PI / 2]}>
                     <mesh
                       name="Cylinder059"
-                      castShadow
-                      receiveShadow
                       geometry={nodes.Cylinder059.geometry}
                       material={materials.body_material}
                     />
                     <mesh
                       name="Cylinder059_1"
-                      castShadow
-                      receiveShadow
                       geometry={nodes.Cylinder059_1.geometry}
                       material={materials.stripes}
                     />
                     <mesh
                       name="Cylinder059_2"
-                      castShadow
-                      receiveShadow
                       geometry={nodes.Cylinder059_2.geometry}
                       material={materials.body_accent}
                     />
@@ -383,22 +369,16 @@ export function XWing({
                   <group name="engine_stand003" position={[-0.695, 0.045, -2.654]}>
                     <mesh
                       name="Cube045"
-                      castShadow
-                      receiveShadow
                       geometry={nodes.Cube045.geometry}
                       material={materials.body_material}
                     />
                     <mesh
                       name="Cube045_1"
-                      castShadow
-                      receiveShadow
                       geometry={nodes.Cube045_1.geometry}
                       material={materials.body_accent}
                     />
                     <mesh
                       name="engine_stand_details_back003"
-                      castShadow
-                      receiveShadow
                       geometry={nodes.engine_stand_details_back003.geometry}
                       material={materials.body_accent}
                       position={[1.853, 0.311, 4.21]}
@@ -407,8 +387,6 @@ export function XWing({
                     />
                     <mesh
                       name="engine_stand_details_front003"
-                      castShadow
-                      receiveShadow
                       geometry={nodes.engine_stand_details_front003.geometry}
                       material={materials.body_accent}
                       position={[-0.33, 0.146, 4.59]}
@@ -418,32 +396,24 @@ export function XWing({
                   </group>
                   <mesh
                     name="laser_c_thingy003"
-                    castShadow
-                    receiveShadow
                     geometry={nodes.laser_c_thingy003.geometry}
                     material={materials.body_material}
                     position={[-5.571, 0.508, 5.289]}
                   />
                   <mesh
                     name="laser_stand003"
-                    castShadow
-                    receiveShadow
                     geometry={nodes.laser_stand003.geometry}
                     material={materials.body_material}
                     position={[-0.695, 0, 0]}
                   />
                   <mesh
                     name="lasers003"
-                    castShadow
-                    receiveShadow
                     geometry={nodes.lasers003.geometry}
                     material={materials.body_material}
                     position={[-0.768, 0, 0]}
                   />
                   <mesh
                     name="prop_cross_horiz003"
-                    castShadow
-                    receiveShadow
                     geometry={nodes.prop_cross_horiz003.geometry}
                     material={materials.accent}
                     position={[-1.374, 0.526, 1.513]}
@@ -451,8 +421,6 @@ export function XWing({
                   />
                   <mesh
                     name="prop_cross_vert003"
-                    castShadow
-                    receiveShadow
                     geometry={nodes.prop_cross_vert003.geometry}
                     material={materials.accent}
                     position={[-1.486, 0.741, 1.513]}
@@ -461,8 +429,6 @@ export function XWing({
                   />
                   <mesh
                     name="propeller003"
-                    castShadow
-                    receiveShadow
                     geometry={nodes.propeller003.geometry}
                     material={materials.accent}
                     position={[-1.1, 0.528, 1.514]}
@@ -471,8 +437,6 @@ export function XWing({
                   />
                   <mesh
                     name="propeller_cap003"
-                    castShadow
-                    receiveShadow
                     geometry={nodes.propeller_cap003.geometry}
                     material={materials.accent}
                     position={[-1.245, 0.528, 1.514]}
@@ -486,29 +450,21 @@ export function XWing({
                     scale={[0.308, 1, 0.308]}>
                     <mesh
                       name="Cylinder055"
-                      castShadow
-                      receiveShadow
                       geometry={nodes.Cylinder055.geometry}
                       material={materials.body_material}
                     />
                     <mesh
                       name="Cylinder055_1"
-                      castShadow
-                      receiveShadow
                       geometry={nodes.Cylinder055_1.geometry}
                       material={materials.dark_accent}
                     />
                     <mesh
                       name="Cylinder055_2"
-                      castShadow
-                      receiveShadow
                       geometry={nodes.Cylinder055_2.geometry}
                       material={materials.thruster_glow}
                     />
                     <mesh
                       name="circuit_pattern003"
-                      castShadow
-                      receiveShadow
                       geometry={nodes.circuit_pattern003.geometry}
                       material={materials.body_accent}
                       position={[-0.043, -0.668, 1.34]}
@@ -518,16 +474,12 @@ export function XWing({
                   </group>
                   <mesh
                     name="wing_back_greeblies003"
-                    castShadow
-                    receiveShadow
                     geometry={nodes.wing_back_greeblies003.geometry}
                     material={materials.body_accent}
                     position={[1.243, 0.103, 1.503]}
                   />
                   <mesh
                     name="wing_saber003"
-                    castShadow
-                    receiveShadow
                     geometry={nodes.wing_saber003.geometry}
                     material={materials.body_accent}
                     position={[1.34, 0.095, 2.007]}
@@ -539,29 +491,21 @@ export function XWing({
                   <JetFlame flameRef={jetRefs[1]} jetPlacement={JetPlacement.bottomRight}/>
                   <mesh
                     name="Cube059"
-                    castShadow
-                    receiveShadow
                     geometry={nodes.Cube059.geometry}
                     material={materials.body_material}
                   />
                   <mesh
                     name="Cube059_1"
-                    castShadow
-                    receiveShadow
                     geometry={nodes.Cube059_1.geometry}
                     material={materials.stripes}
                   />
                   <mesh
                     name="Cube059_2"
-                    castShadow
-                    receiveShadow
                     geometry={nodes.Cube059_2.geometry}
                     material={materials.body_accent}
                   />
                   <mesh
                     name="engine_front_inner004"
-                    castShadow
-                    receiveShadow
                     geometry={nodes.engine_front_inner004.geometry}
                     material={materials.accent}
                     position={[-0.503, 0.526, 1.514]}
@@ -573,22 +517,16 @@ export function XWing({
                     rotation={[0, 0, -Math.PI / 2]}>
                     <mesh
                       name="Cylinder086"
-                      castShadow
-                      receiveShadow
                       geometry={nodes.Cylinder086.geometry}
                       material={materials.body_material}
                     />
                     <mesh
                       name="Cylinder086_1"
-                      castShadow
-                      receiveShadow
                       geometry={nodes.Cylinder086_1.geometry}
                       material={materials.stripes}
                     />
                     <mesh
                       name="Cylinder086_2"
-                      castShadow
-                      receiveShadow
                       geometry={nodes.Cylinder086_2.geometry}
                       material={materials.body_accent}
                     />
@@ -596,22 +534,16 @@ export function XWing({
                   <group name="engine_stand004" position={[-0.695, 0.045, -2.654]}>
                     <mesh
                       name="Cube060"
-                      castShadow
-                      receiveShadow
                       geometry={nodes.Cube060.geometry}
                       material={materials.body_material}
                     />
                     <mesh
                       name="Cube060_1"
-                      castShadow
-                      receiveShadow
                       geometry={nodes.Cube060_1.geometry}
                       material={materials.body_accent}
                     />
                     <mesh
                       name="engine_stand_details_back004"
-                      castShadow
-                      receiveShadow
                       geometry={nodes.engine_stand_details_back004.geometry}
                       material={materials.body_accent}
                       position={[1.853, 0.311, 4.21]}
@@ -620,8 +552,6 @@ export function XWing({
                     />
                     <mesh
                       name="engine_stand_details_front004"
-                      castShadow
-                      receiveShadow
                       geometry={nodes.engine_stand_details_front004.geometry}
                       material={materials.body_accent}
                       position={[-0.33, 0.146, 4.59]}
@@ -631,32 +561,24 @@ export function XWing({
                   </group>
                   <mesh
                     name="laser_c_thingy004"
-                    castShadow
-                    receiveShadow
                     geometry={nodes.laser_c_thingy004.geometry}
                     material={materials.body_material}
                     position={[-5.571, 0.508, 5.289]}
                   />
                   <mesh
                     name="laser_stand004"
-                    castShadow
-                    receiveShadow
                     geometry={nodes.laser_stand004.geometry}
                     material={materials.body_material}
                     position={[-0.695, 0, 0]}
                   />
                   <mesh
                     name="lasers004"
-                    castShadow
-                    receiveShadow
                     geometry={nodes.lasers004.geometry}
                     material={materials.body_material}
                     position={[-0.768, 0, 0]}
                   />
                   <mesh
                     name="prop_cross_horiz004"
-                    castShadow
-                    receiveShadow
                     geometry={nodes.prop_cross_horiz004.geometry}
                     material={materials.accent}
                     position={[-1.374, 0.526, 1.513]}
@@ -664,8 +586,6 @@ export function XWing({
                   />
                   <mesh
                     name="prop_cross_vert004"
-                    castShadow
-                    receiveShadow
                     geometry={nodes.prop_cross_vert004.geometry}
                     material={materials.accent}
                     position={[-1.486, 0.741, 1.513]}
@@ -674,8 +594,6 @@ export function XWing({
                   />
                   <mesh
                     name="propeller004"
-                    castShadow
-                    receiveShadow
                     geometry={nodes.propeller004.geometry}
                     material={materials.accent}
                     position={[-1.1, 0.528, 1.514]}
@@ -684,8 +602,6 @@ export function XWing({
                   />
                   <mesh
                     name="propeller_cap004"
-                    castShadow
-                    receiveShadow
                     geometry={nodes.propeller_cap004.geometry}
                     material={materials.accent}
                     position={[-1.245, 0.528, 1.514]}
@@ -699,29 +615,21 @@ export function XWing({
                     scale={[0.308, 1, 0.308]}>
                     <mesh
                       name="Cylinder082"
-                      castShadow
-                      receiveShadow
                       geometry={nodes.Cylinder082.geometry}
                       material={materials.body_material}
                     />
                     <mesh
                       name="Cylinder082_1"
-                      castShadow
-                      receiveShadow
                       geometry={nodes.Cylinder082_1.geometry}
                       material={materials.dark_accent}
                     />
                     <mesh
                       name="Cylinder082_2"
-                      castShadow
-                      receiveShadow
                       geometry={nodes.Cylinder082_2.geometry}
                       material={materials.thruster_glow}
                     />
                     <mesh
                       name="circuit_pattern004"
-                      castShadow
-                      receiveShadow
                       geometry={nodes.circuit_pattern004.geometry}
                       material={materials.body_accent}
                       position={[-0.043, -0.668, 1.34]}
@@ -731,16 +639,12 @@ export function XWing({
                   </group>
                   <mesh
                     name="wing_back_greeblies004"
-                    castShadow
-                    receiveShadow
                     geometry={nodes.wing_back_greeblies004.geometry}
                     material={materials.body_accent}
                     position={[1.243, 0.103, 1.503]}
                   />
                   <mesh
                     name="wing_saber004"
-                    castShadow
-                    receiveShadow
                     geometry={nodes.wing_saber004.geometry}
                     material={materials.body_accent}
                     position={[1.34, 0.095, 2.007]}
@@ -752,29 +656,21 @@ export function XWing({
                   <JetFlame flameRef={jetRefs[2]} jetPlacement={JetPlacement.topLeft}/>
                   <mesh
                     name="Cube064"
-                    castShadow
-                    receiveShadow
                     geometry={nodes.Cube064.geometry}
                     material={materials.body_material}
                   />
                   <mesh
                     name="Cube064_1"
-                    castShadow
-                    receiveShadow
                     geometry={nodes.Cube064_1.geometry}
                     material={materials.stripes}
                   />
                   <mesh
                     name="Cube064_2"
-                    castShadow
-                    receiveShadow
                     geometry={nodes.Cube064_2.geometry}
                     material={materials.body_accent}
                   />
                   <mesh
                     name="engine_front_inner005"
-                    castShadow
-                    receiveShadow
                     geometry={nodes.engine_front_inner005.geometry}
                     material={materials.accent}
                     position={[-0.503, 0.526, 1.514]}
@@ -786,22 +682,16 @@ export function XWing({
                     rotation={[0, 0, -Math.PI / 2]}>
                     <mesh
                       name="Cylinder095"
-                      castShadow
-                      receiveShadow
                       geometry={nodes.Cylinder095.geometry}
                       material={materials.body_material}
                     />
                     <mesh
                       name="Cylinder095_1"
-                      castShadow
-                      receiveShadow
                       geometry={nodes.Cylinder095_1.geometry}
                       material={materials.stripes}
                     />
                     <mesh
                       name="Cylinder095_2"
-                      castShadow
-                      receiveShadow
                       geometry={nodes.Cylinder095_2.geometry}
                       material={materials.body_accent}
                     />
@@ -809,22 +699,16 @@ export function XWing({
                   <group name="engine_stand005" position={[-0.695, 0.045, -2.654]}>
                     <mesh
                       name="Cube065"
-                      castShadow
-                      receiveShadow
                       geometry={nodes.Cube065.geometry}
                       material={materials.body_material}
                     />
                     <mesh
                       name="Cube065_1"
-                      castShadow
-                      receiveShadow
                       geometry={nodes.Cube065_1.geometry}
                       material={materials.body_accent}
                     />
                     <mesh
                       name="engine_stand_details_back005"
-                      castShadow
-                      receiveShadow
                       geometry={nodes.engine_stand_details_back005.geometry}
                       material={materials.body_accent}
                       position={[1.853, 0.311, 4.21]}
@@ -833,8 +717,6 @@ export function XWing({
                     />
                     <mesh
                       name="engine_stand_details_front005"
-                      castShadow
-                      receiveShadow
                       geometry={nodes.engine_stand_details_front005.geometry}
                       material={materials.body_accent}
                       position={[-0.33, 0.146, 4.59]}
@@ -844,32 +726,24 @@ export function XWing({
                   </group>
                   <mesh
                     name="laser_c_thingy005"
-                    castShadow
-                    receiveShadow
                     geometry={nodes.laser_c_thingy005.geometry}
                     material={materials.body_material}
                     position={[-5.571, 0.508, 5.289]}
                   />
                   <mesh
                     name="laser_stand005"
-                    castShadow
-                    receiveShadow
                     geometry={nodes.laser_stand005.geometry}
                     material={materials.body_material}
                     position={[-0.695, 0, 0]}
                   />
                   <mesh
                     name="lasers005"
-                    castShadow
-                    receiveShadow
                     geometry={nodes.lasers005.geometry}
                     material={materials.body_material}
                     position={[-0.768, 0, 0]}
                   />
                   <mesh
                     name="prop_cross_horiz005"
-                    castShadow
-                    receiveShadow
                     geometry={nodes.prop_cross_horiz005.geometry}
                     material={materials.accent}
                     position={[-1.374, 0.526, 1.513]}
@@ -877,8 +751,6 @@ export function XWing({
                   />
                   <mesh
                     name="prop_cross_vert005"
-                    castShadow
-                    receiveShadow
                     geometry={nodes.prop_cross_vert005.geometry}
                     material={materials.accent}
                     position={[-1.486, 0.741, 1.513]}
@@ -887,8 +759,6 @@ export function XWing({
                   />
                   <mesh
                     name="propeller005"
-                    castShadow
-                    receiveShadow
                     geometry={nodes.propeller005.geometry}
                     material={materials.accent}
                     position={[-1.1, 0.528, 1.514]}
@@ -897,8 +767,6 @@ export function XWing({
                   />
                   <mesh
                     name="propeller_cap005"
-                    castShadow
-                    receiveShadow
                     geometry={nodes.propeller_cap005.geometry}
                     material={materials.accent}
                     position={[-1.245, 0.528, 1.514]}
@@ -912,29 +780,21 @@ export function XWing({
                     scale={[0.308, 1, 0.308]}>
                     <mesh
                       name="Cylinder091"
-                      castShadow
-                      receiveShadow
                       geometry={nodes.Cylinder091.geometry}
                       material={materials.body_material}
                     />
                     <mesh
                       name="Cylinder091_1"
-                      castShadow
-                      receiveShadow
                       geometry={nodes.Cylinder091_1.geometry}
                       material={materials.dark_accent}
                     />
                     <mesh
                       name="Cylinder091_2"
-                      castShadow
-                      receiveShadow
                       geometry={nodes.Cylinder091_2.geometry}
                       material={materials.thruster_glow}
                     />
                     <mesh
                       name="circuit_pattern005"
-                      castShadow
-                      receiveShadow
                       geometry={nodes.circuit_pattern005.geometry}
                       material={materials.body_accent}
                       position={[-0.043, -0.668, 1.34]}
@@ -944,16 +804,12 @@ export function XWing({
                   </group>
                   <mesh
                     name="wing_back_greeblies005"
-                    castShadow
-                    receiveShadow
                     geometry={nodes.wing_back_greeblies005.geometry}
                     material={materials.body_accent}
                     position={[1.243, 0.103, 1.503]}
                   />
                   <mesh
                     name="wing_saber005"
-                    castShadow
-                    receiveShadow
                     geometry={nodes.wing_saber005.geometry}
                     material={materials.body_accent}
                     position={[1.34, 0.095, 2.007]}
@@ -965,29 +821,21 @@ export function XWing({
                   <JetFlame flameRef={jetRefs[3]} jetPlacement={JetPlacement.bottomLeft}/>
                   <mesh
                     name="Cube069"
-                    castShadow
-                    receiveShadow
                     geometry={nodes.Cube069.geometry}
                     material={materials.body_material}
                   />
                   <mesh
                     name="Cube069_1"
-                    castShadow
-                    receiveShadow
                     geometry={nodes.Cube069_1.geometry}
                     material={materials.stripes}
                   />
                   <mesh
                     name="Cube069_2"
-                    castShadow
-                    receiveShadow
                     geometry={nodes.Cube069_2.geometry}
                     material={materials.body_accent}
                   />
                   <mesh
                     name="engine_front_inner006"
-                    castShadow
-                    receiveShadow
                     geometry={nodes.engine_front_inner006.geometry}
                     material={materials.accent}
                     position={[-0.503, 0.526, 1.514]}
@@ -999,22 +847,16 @@ export function XWing({
                     rotation={[0, 0, -Math.PI / 2]}>
                     <mesh
                       name="Cylinder104"
-                      castShadow
-                      receiveShadow
                       geometry={nodes.Cylinder104.geometry}
                       material={materials.body_material}
                     />
                     <mesh
                       name="Cylinder104_1"
-                      castShadow
-                      receiveShadow
                       geometry={nodes.Cylinder104_1.geometry}
                       material={materials.stripes}
                     />
                     <mesh
                       name="Cylinder104_2"
-                      castShadow
-                      receiveShadow
                       geometry={nodes.Cylinder104_2.geometry}
                       material={materials.body_accent}
                     />
@@ -1022,22 +864,16 @@ export function XWing({
                   <group name="engine_stand006" position={[-0.695, 0.045, -2.654]}>
                     <mesh
                       name="Cube070"
-                      castShadow
-                      receiveShadow
                       geometry={nodes.Cube070.geometry}
                       material={materials.body_material}
                     />
                     <mesh
                       name="Cube070_1"
-                      castShadow
-                      receiveShadow
                       geometry={nodes.Cube070_1.geometry}
                       material={materials.body_accent}
                     />
                     <mesh
                       name="engine_stand_details_back006"
-                      castShadow
-                      receiveShadow
                       geometry={nodes.engine_stand_details_back006.geometry}
                       material={materials.body_accent}
                       position={[1.853, 0.311, 4.21]}
@@ -1046,8 +882,6 @@ export function XWing({
                     />
                     <mesh
                       name="engine_stand_details_front006"
-                      castShadow
-                      receiveShadow
                       geometry={nodes.engine_stand_details_front006.geometry}
                       material={materials.body_accent}
                       position={[-0.33, 0.146, 4.59]}
@@ -1057,32 +891,24 @@ export function XWing({
                   </group>
                   <mesh
                     name="laser_c_thingy006"
-                    castShadow
-                    receiveShadow
                     geometry={nodes.laser_c_thingy006.geometry}
                     material={materials.body_material}
                     position={[-5.571, 0.508, 5.289]}
                   />
                   <mesh
                     name="laser_stand006"
-                    castShadow
-                    receiveShadow
                     geometry={nodes.laser_stand006.geometry}
                     material={materials.body_material}
                     position={[-0.695, 0, 0]}
                   />
                   <mesh
                     name="lasers006"
-                    castShadow
-                    receiveShadow
                     geometry={nodes.lasers006.geometry}
                     material={materials.body_material}
                     position={[-0.768, 0, 0]}
                   />
                   <mesh
                     name="prop_cross_horiz006"
-                    castShadow
-                    receiveShadow
                     geometry={nodes.prop_cross_horiz006.geometry}
                     material={materials.accent}
                     position={[-1.374, 0.526, 1.513]}
@@ -1090,8 +916,6 @@ export function XWing({
                   />
                   <mesh
                     name="prop_cross_vert006"
-                    castShadow
-                    receiveShadow
                     geometry={nodes.prop_cross_vert006.geometry}
                     material={materials.accent}
                     position={[-1.486, 0.741, 1.513]}
@@ -1100,8 +924,6 @@ export function XWing({
                   />
                   <mesh
                     name="propeller006"
-                    castShadow
-                    receiveShadow
                     geometry={nodes.propeller006.geometry}
                     material={materials.accent}
                     position={[-1.1, 0.528, 1.514]}
@@ -1110,8 +932,6 @@ export function XWing({
                   />
                   <mesh
                     name="propeller_cap006"
-                    castShadow
-                    receiveShadow
                     geometry={nodes.propeller_cap006.geometry}
                     material={materials.accent}
                     position={[-1.245, 0.528, 1.514]}
@@ -1125,29 +945,21 @@ export function XWing({
                     scale={[0.308, 1, 0.308]}>
                     <mesh
                       name="Cylinder100"
-                      castShadow
-                      receiveShadow
                       geometry={nodes.Cylinder100.geometry}
                       material={materials.body_material}
                     />
                     <mesh
                       name="Cylinder100_1"
-                      castShadow
-                      receiveShadow
                       geometry={nodes.Cylinder100_1.geometry}
                       material={materials.dark_accent}
                     />
                     <mesh
                       name="Cylinder100_2"
-                      castShadow
-                      receiveShadow
                       geometry={nodes.Cylinder100_2.geometry}
                       material={materials.thruster_glow}
                     />
                     <mesh
                       name="circuit_pattern006"
-                      castShadow
-                      receiveShadow
                       geometry={nodes.circuit_pattern006.geometry}
                       material={materials.body_accent}
                       position={[-0.043, -0.668, 1.34]}
@@ -1157,16 +969,12 @@ export function XWing({
                   </group>
                   <mesh
                     name="wing_back_greeblies006"
-                    castShadow
-                    receiveShadow
                     geometry={nodes.wing_back_greeblies006.geometry}
                     material={materials.body_accent}
                     position={[1.243, 0.103, 1.503]}
                   />
                   <mesh
                     name="wing_saber006"
-                    castShadow
-                    receiveShadow
                     geometry={nodes.wing_saber006.geometry}
                     material={materials.body_accent}
                     position={[1.34, 0.095, 2.007]}
@@ -1177,15 +985,11 @@ export function XWing({
                 <group name="cockpit_cover">
                   <mesh
                     name="Cube010"
-                    castShadow
-                    receiveShadow
                     geometry={nodes.Cube010.geometry}
                     material={materials.accent}
                   />
                   <mesh
                     name="Cube010_1"
-                    castShadow
-                    receiveShadow
                     geometry={nodes.Cube010_1.geometry}
                     material={materials.glass}
                   />
@@ -1193,37 +997,27 @@ export function XWing({
                 <group name="fuselage">
                   <mesh
                     name="Cube008"
-                    castShadow
-                    receiveShadow
                     geometry={nodes.Cube008.geometry}
                     material={materials.body_material}
                   />
                   <mesh
                     name="Cube008_1"
-                    castShadow
-                    receiveShadow
                     geometry={nodes.Cube008_1.geometry}
                     material={materials.stripes}
                   />
                   <mesh
                     name="Cube008_2"
-                    castShadow
-                    receiveShadow
                     geometry={nodes.Cube008_2.geometry}
                     material={materials.body_accent}
                   />
                   <mesh
                     name="Cube008_3"
-                    castShadow
-                    receiveShadow
                     geometry={nodes.Cube008_3.geometry}
                     material={materials.dark_accent}
                   />
                 </group>
                 <mesh
                   name="nozzle"
-                  castShadow
-                  receiveShadow
                   geometry={nodes.nozzle.geometry}
                   material={materials.body_material}
                   position={[-5.625, 0, 0]}
@@ -1231,16 +1025,12 @@ export function XWing({
                 />
                 <mesh
                   name="wing_axle"
-                  castShadow
-                  receiveShadow
                   geometry={nodes.wing_axle.geometry}
                   material={materials.body_material}
                   position={[3.527, 0, 0]}
                 />
                 <mesh
                   name="grate_lengthwise"
-                  castShadow
-                  receiveShadow
                   geometry={nodes.grate_lengthwise.geometry}
                   material={materials.accent}
                   position={[4.769, 0.927, -0.268]}
@@ -1249,8 +1039,6 @@ export function XWing({
                 />
                 <mesh
                   name="grate_widthwise"
-                  castShadow
-                  receiveShadow
                   geometry={nodes.grate_widthwise.geometry}
                   material={materials.accent}
                   position={[4.951, 0.901, 0]}
@@ -1259,8 +1047,6 @@ export function XWing({
                 />
                 <mesh
                   name="side_clamps"
-                  castShadow
-                  receiveShadow
                   geometry={nodes.side_clamps.geometry}
                   material={materials.accent}
                   position={[3.763, 0.904, 0.323]}
@@ -1268,8 +1054,6 @@ export function XWing({
                 />
                 <mesh
                   name="mil_falcon_thingy"
-                  castShadow
-                  receiveShadow
                   geometry={nodes.mil_falcon_thingy.geometry}
                   material={materials.accent}
                   position={[3.361, 0.89, 0]}
@@ -1277,8 +1061,6 @@ export function XWing({
                 />
                 <mesh
                   name="piping"
-                  castShadow
-                  receiveShadow
                   geometry={nodes.piping.geometry}
                   material={materials.accent}
                   position={[4.185, 0.9, 0.242]}
@@ -1287,8 +1069,6 @@ export function XWing({
                 />
                 <mesh
                   name="panel"
-                  castShadow
-                  receiveShadow
                   geometry={nodes.panel.geometry}
                   material={materials.accent}
                   position={[4.185, 0.894, 0]}
@@ -1296,8 +1076,6 @@ export function XWing({
                 />
                 <mesh
                   name="panel_cover"
-                  castShadow
-                  receiveShadow
                   geometry={nodes.panel_cover.geometry}
                   material={materials.accent}
                   position={[4.23, 0.934, 0]}
@@ -1306,8 +1084,6 @@ export function XWing({
                 />
                 <mesh
                   name="mil_falcon_inner"
-                  castShadow
-                  receiveShadow
                   geometry={nodes.mil_falcon_inner.geometry}
                   material={materials.accent}
                   position={[3.361, 0.883, 0]}
@@ -1315,8 +1091,6 @@ export function XWing({
                 />
                 <mesh
                   name="x_manhole"
-                  castShadow
-                  receiveShadow
                   geometry={nodes.x_manhole.geometry}
                   material={materials.accent}
                   position={[3.365, 0.926, 0]}
@@ -1324,8 +1098,6 @@ export function XWing({
                 />
                 <mesh
                   name="mil_falcon_front"
-                  castShadow
-                  receiveShadow
                   geometry={nodes.mil_falcon_front.geometry}
                   material={materials.accent}
                   position={[3.138, 0.915, 0]}
@@ -1333,8 +1105,6 @@ export function XWing({
                 />
                 <mesh
                   name="circular_support"
-                  castShadow
-                  receiveShadow
                   geometry={nodes.circular_support.geometry}
                   material={materials.accent}
                   position={[2.641, 0.909, 0]}
@@ -1342,8 +1112,6 @@ export function XWing({
                 />
                 <mesh
                   name="pipe_clamps"
-                  castShadow
-                  receiveShadow
                   geometry={nodes.pipe_clamps.geometry}
                   material={materials.accent}
                   position={[3.76, 0.901, 0.158]}
@@ -1352,8 +1120,6 @@ export function XWing({
                 />
                 <mesh
                   name="piping001"
-                  castShadow
-                  receiveShadow
                   geometry={nodes.piping001.geometry}
                   material={materials.accent}
                   position={[4.185, 0.978, 0.05]}
@@ -1362,8 +1128,6 @@ export function XWing({
                 />
                 <mesh
                   name="pipe_clamps001"
-                  castShadow
-                  receiveShadow
                   geometry={nodes.pipe_clamps001.geometry}
                   material={materials.accent}
                   position={[3.76, 0.898, 0.05]}
@@ -1372,8 +1136,6 @@ export function XWing({
                 />
                 <mesh
                   name="droid_back_support"
-                  castShadow
-                  receiveShadow
                   geometry={nodes.droid_back_support.geometry}
                   material={materials.accent}
                   position={[2.209, 0.921, 0]}
@@ -1381,8 +1143,6 @@ export function XWing({
                 />
                 <mesh
                   name="droid_front_support"
-                  castShadow
-                  receiveShadow
                   geometry={nodes.droid_front_support.geometry}
                   material={materials.accent}
                   position={[1.788, 0.947, 0]}
@@ -1390,8 +1150,6 @@ export function XWing({
                 />
                 <mesh
                   name="pipe_clamps002"
-                  castShadow
-                  receiveShadow
                   geometry={nodes.pipe_clamps002.geometry}
                   material={materials.accent}
                   position={[2.56, 0.948, 0.12]}
@@ -1400,8 +1158,6 @@ export function XWing({
                 />
                 <mesh
                   name="piping003"
-                  castShadow
-                  receiveShadow
                   geometry={nodes.piping003.geometry}
                   material={materials.accent}
                   position={[2.641, 0.934, 0]}
@@ -1410,8 +1166,6 @@ export function XWing({
                 />
                 <mesh
                   name="thick_piping"
-                  castShadow
-                  receiveShadow
                   geometry={nodes.thick_piping.geometry}
                   material={materials.accent}
                   position={[2.641, 0.95, 0]}
@@ -1419,8 +1173,6 @@ export function XWing({
                 />
                 <mesh
                   name="detail_cube"
-                  castShadow
-                  receiveShadow
                   geometry={nodes.detail_cube.geometry}
                   material={materials.accent}
                   position={[4.339, 0.909, 0.159]}
@@ -1428,8 +1180,6 @@ export function XWing({
                 />
                 <mesh
                   name="detail_cube001"
-                  castShadow
-                  receiveShadow
                   geometry={nodes.detail_cube001.geometry}
                   material={materials.accent}
                   position={[4.231, 0.909, 0.171]}
@@ -1438,8 +1188,6 @@ export function XWing({
                 />
                 <mesh
                   name="detail_cube002"
-                  castShadow
-                  receiveShadow
                   geometry={nodes.detail_cube002.geometry}
                   material={materials.accent}
                   position={[4.231, 0.909, 0.135]}
@@ -1448,8 +1196,6 @@ export function XWing({
                 />
                 <mesh
                   name="detail_cube003"
-                  castShadow
-                  receiveShadow
                   geometry={nodes.detail_cube003.geometry}
                   material={materials.accent}
                   position={[4.172, 0.909, 0.159]}
@@ -1457,8 +1203,6 @@ export function XWing({
                 />
                 <mesh
                   name="detail_cube004"
-                  castShadow
-                  receiveShadow
                   geometry={nodes.detail_cube004.geometry}
                   material={materials.accent}
                   position={[4.288, 0.924, 0.108]}
@@ -1467,8 +1211,6 @@ export function XWing({
                 />
                 <mesh
                   name="detail_cube005"
-                  castShadow
-                  receiveShadow
                   geometry={nodes.detail_cube005.geometry}
                   material={materials.accent}
                   position={[4.06, 0.907, 0.131]}
@@ -1477,8 +1219,6 @@ export function XWing({
                 />
                 <mesh
                   name="detail_cube006"
-                  castShadow
-                  receiveShadow
                   geometry={nodes.detail_cube006.geometry}
                   material={materials.accent}
                   position={[3.202, 0.907, 0.295]}
@@ -1487,8 +1227,6 @@ export function XWing({
                 />
                 <mesh
                   name="detail_cube007"
-                  castShadow
-                  receiveShadow
                   geometry={nodes.detail_cube007.geometry}
                   material={materials.accent}
                   position={[2.921, 0.897, 0.092]}
@@ -1497,8 +1235,6 @@ export function XWing({
                 />
                 <mesh
                   name="detail_cube008"
-                  castShadow
-                  receiveShadow
                   geometry={nodes.detail_cube008.geometry}
                   material={materials.accent}
                   position={[2.435, 0.896, 0.25]}
@@ -1507,8 +1243,6 @@ export function XWing({
                 />
                 <mesh
                   name="detail_cube009"
-                  castShadow
-                  receiveShadow
                   geometry={nodes.detail_cube009.geometry}
                   material={materials.accent}
                   position={[2.522, 0.896, 0.29]}
@@ -1517,8 +1251,6 @@ export function XWing({
                 />
                 <mesh
                   name="detail_cube010"
-                  castShadow
-                  receiveShadow
                   geometry={nodes.detail_cube010.geometry}
                   material={materials.accent}
                   position={[2.522, 0.896, 0.253]}
@@ -1527,8 +1259,6 @@ export function XWing({
                 />
                 <mesh
                   name="detail_cube011"
-                  castShadow
-                  receiveShadow
                   geometry={nodes.detail_cube011.geometry}
                   material={materials.accent}
                   position={[2.94, 0.897, 0.04]}
@@ -1536,8 +1266,6 @@ export function XWing({
                 />
                 <mesh
                   name="back_port_panel"
-                  castShadow
-                  receiveShadow
                   geometry={nodes.back_port_panel.geometry}
                   material={materials.accent}
                   position={[5.271, 0.01, 0]}
@@ -1546,8 +1274,6 @@ export function XWing({
                 />
                 <mesh
                   name="back_port"
-                  castShadow
-                  receiveShadow
                   geometry={nodes.back_port.geometry}
                   material={materials.accent}
                   position={[5.344, -0.016, 0]}
@@ -1556,8 +1282,6 @@ export function XWing({
                 />
                 <mesh
                   name="back_detail_cube001"
-                  castShadow
-                  receiveShadow
                   geometry={nodes.back_detail_cube001.geometry}
                   material={materials.accent}
                   position={[5.276, 0.16, 0.622]}
@@ -1566,8 +1290,6 @@ export function XWing({
                 />
                 <mesh
                   name="back_detail_cube002"
-                  castShadow
-                  receiveShadow
                   geometry={nodes.back_detail_cube002.geometry}
                   material={materials.accent}
                   position={[5.229, -0.712, 0.336]}
@@ -1576,8 +1298,6 @@ export function XWing({
                 />
                 <mesh
                   name="back_detail_cylinder001"
-                  castShadow
-                  receiveShadow
                   geometry={nodes.back_detail_cylinder001.geometry}
                   material={materials.accent}
                   position={[5.24, -0.585, 0.513]}
@@ -1586,8 +1306,6 @@ export function XWing({
                 />
                 <mesh
                   name="back_detail_cylinder002"
-                  castShadow
-                  receiveShadow
                   geometry={nodes.back_detail_cylinder002.geometry}
                   material={materials.accent}
                   position={[5.145, -0.585, 0.513]}
@@ -1596,8 +1314,6 @@ export function XWing({
                 />
                 <mesh
                   name="back_detail_cube003"
-                  castShadow
-                  receiveShadow
                   geometry={nodes.back_detail_cube003.geometry}
                   material={materials.accent}
                   position={[5.236, -0.801, 0.453]}
@@ -1605,8 +1321,6 @@ export function XWing({
                 />
                 <mesh
                   name="back_detail_cylinder003"
-                  castShadow
-                  receiveShadow
                   geometry={nodes.back_detail_cylinder003.geometry}
                   material={materials.body_accent}
                   position={[5.454, -0.016, 0.195]}
@@ -1615,8 +1329,6 @@ export function XWing({
                 />
                 <mesh
                   name="back_detail_cylinder004"
-                  castShadow
-                  receiveShadow
                   geometry={nodes.back_detail_cylinder004.geometry}
                   material={materials.accent}
                   position={[5.322, 0.238, 0.391]}
@@ -1625,8 +1337,6 @@ export function XWing({
                 />
                 <mesh
                   name="back_detail_cylinder005"
-                  castShadow
-                  receiveShadow
                   geometry={nodes.back_detail_cylinder005.geometry}
                   material={materials.accent}
                   position={[5.277, 0.432, 0.387]}
@@ -1635,8 +1345,6 @@ export function XWing({
                 />
                 <mesh
                   name="back_detail_cylinder006"
-                  castShadow
-                  receiveShadow
                   geometry={nodes.back_detail_cylinder006.geometry}
                   material={materials.accent}
                   position={[5.21, 0.106, 0.551]}
@@ -1645,8 +1353,6 @@ export function XWing({
                 />
                 <mesh
                   name="back_detail_cube004"
-                  castShadow
-                  receiveShadow
                   geometry={nodes.back_detail_cube004.geometry}
                   material={materials.accent}
                   position={[5.325, -0.379, 0.397]}
@@ -1655,8 +1361,6 @@ export function XWing({
                 />
                 <mesh
                   name="back_detail_cylinder007"
-                  castShadow
-                  receiveShadow
                   geometry={nodes.back_detail_cylinder007.geometry}
                   material={materials.accent}
                   position={[5.244, -0.422, 0.552]}
@@ -1665,8 +1369,6 @@ export function XWing({
                 />
                 <mesh
                   name="back_detail_cube005"
-                  castShadow
-                  receiveShadow
                   geometry={nodes.back_detail_cube005.geometry}
                   material={materials.accent}
                   position={[5.248, 0.379, 0.558]}
@@ -1675,8 +1377,6 @@ export function XWing({
                 />
                 <mesh
                   name="back_detail_cylinder008"
-                  castShadow
-                  receiveShadow
                   geometry={nodes.back_detail_cylinder008.geometry}
                   material={materials.accent}
                   position={[5.277, 0.355, 0.534]}
@@ -1685,8 +1385,6 @@ export function XWing({
                 />
                 <mesh
                   name="back_detail_cube006"
-                  castShadow
-                  receiveShadow
                   geometry={nodes.back_detail_cube006.geometry}
                   material={materials.accent}
                   position={[5.234, 0.402, -0.477]}
@@ -1695,8 +1393,6 @@ export function XWing({
                 />
                 <mesh
                   name="back_detail_cylinder009"
-                  castShadow
-                  receiveShadow
                   geometry={nodes.back_detail_cylinder009.geometry}
                   material={materials.accent}
                   position={[5.244, 0.255, -0.669]}
@@ -1705,8 +1401,6 @@ export function XWing({
                 />
                 <mesh
                   name="back_detail_cube007"
-                  castShadow
-                  receiveShadow
                   geometry={nodes.back_detail_cube007.geometry}
                   material={materials.accent}
                   position={[5.234, -0.22, 0.674]}
@@ -1715,8 +1409,6 @@ export function XWing({
                 />
                 <mesh
                   name="back_detail_cylinder010"
-                  castShadow
-                  receiveShadow
                   geometry={nodes.back_detail_cylinder010.geometry}
                   material={materials.accent}
                   position={[5.244, -0.115, -0.501]}
@@ -1726,29 +1418,21 @@ export function XWing({
                 <group name="droid_body" position={[1.79, 1.074, 0]} scale={0.234}>
                   <mesh
                     name="Sphere001"
-                    castShadow
-                    receiveShadow
                     geometry={nodes.Sphere001.geometry}
                     material={materials.droid_body}
                   />
                   <mesh
                     name="Sphere001_1"
-                    castShadow
-                    receiveShadow
                     geometry={nodes.Sphere001_1.geometry}
                     material={materials.droid_head}
                   />
                   <mesh
                     name="Sphere001_2"
-                    castShadow
-                    receiveShadow
                     geometry={nodes.Sphere001_2.geometry}
                     material={materials.droid_accent}
                   />
                   <mesh
                     name="Sphere001_3"
-                    castShadow
-                    receiveShadow
                     geometry={nodes.Sphere001_3.geometry}
                     material={materials.droid_light}
                   />
@@ -1760,23 +1444,17 @@ export function XWing({
                   scale={[-0.201, -0.016, -0.201]}>
                   <mesh
                     name="Cylinder007"
-                    castShadow
-                    receiveShadow
                     geometry={nodes.Cylinder007.geometry}
                     material={materials.droid_body}
                   />
                   <mesh
                     name="Cylinder007_1"
-                    castShadow
-                    receiveShadow
                     geometry={nodes.Cylinder007_1.geometry}
                     material={materials.droid_head}
                   />
                 </group>
                 <mesh
                   name="droid_lens_large"
-                  castShadow
-                  receiveShadow
                   geometry={nodes.droid_lens_large.geometry}
                   material={materials.Material}
                   position={[1.617, 1.171, -0.021]}
@@ -1784,8 +1462,6 @@ export function XWing({
                 />
                 <mesh
                   name="droid_lens_small"
-                  castShadow
-                  receiveShadow
                   geometry={nodes.droid_lens_small.geometry}
                   material={materials.Material}
                   position={[1.603, 1.11, 0.068]}

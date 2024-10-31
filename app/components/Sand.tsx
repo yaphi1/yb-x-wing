@@ -23,8 +23,6 @@ export function Sand(props: JSX.IntrinsicElements['group']) {
     <group {...props} dispose={null}>
       <mesh
         name="Sand"
-        castShadow
-        receiveShadow
         geometry={nodes.Sand.geometry}
         material={materials.custom_sand_material}
       />
