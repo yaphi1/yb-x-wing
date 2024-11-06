@@ -4,14 +4,12 @@ Modified manually afterwards to add functionality.
 */
 
 import * as THREE from 'three';
-import React from 'react';
+import React, { useMemo, useRef } from 'react';
 import { useGLTF } from '@react-three/drei';
 import { GLTF } from 'three-stdlib';
-import { type WingRefs } from '../helpers/wingHelpers';
-import { EffectComposer, SelectiveBloom } from '@react-three/postprocessing';
-import { KernelSize } from 'postprocessing';
-import { FakeGlowMaterial } from './FakeGlowMaterial';
+import { type WingRefs } from '../../helpers/wingHelpers';
 import { useFrame } from '@react-three/fiber';
+import { JetFlame, JetPlacement } from './JetFlame';
 
 const STARTING_DIRECTION_CORRECTION = new THREE.Euler(0, -0.5 * Math.PI, 0);
 
@@ -197,89 +195,6 @@ type GLTFResult = GLTF & {
 }
 
 type GroupRef = React.MutableRefObject<THREE.Group>;
-type MeshRef = React.MutableRefObject<THREE.Mesh>;
-
-type JetPlacementCoefficients = {
-  y: number;
-  z: number;
-};
-const JetPlacement: Record<string, JetPlacementCoefficients> = {
-  topRight: { y: 1, z: -1 },
-  topLeft: { y: 1, z: 1 },
-  bottomRight: { y: -1, z: -1 },
-  bottomLeft: { y: -1, z: 1 },
-} as const;
-
-function JetFlame({ flameRef, jetPlacement } : {
-  flameRef: MeshRef;
-  jetPlacement: JetPlacementCoefficients;
-}) {
-  const radiusTop = 0.3;
-  const radiusBottom = 0.2;
-  const height = 2;
-  const radialSegments = 32;
-  const heightSegments = 1;
-  const isOpenEnded = false;
-
-  return (
-    <>
-      <mesh
-        ref={flameRef}
-        position={[
-          // 4.5,
-          3.4,
-          jetPlacement.y * 0.9,
-          jetPlacement.z * 1.6,
-        ]}
-        // scale={[4,1,1]}
-      >
-        <sphereGeometry args={[0.4]} />
-        <FakeGlowMaterial
-          glowColor="#0098db"
-          glowInternalRadius={1}
-        />
-        {/* <meshStandardMaterial color={'red'} /> */}
-        {/* <meshStandardMaterial
-          color={'#0098db'}
-          transparent={true}
-          opacity={0.2}
-        /> */}
-      </mesh>
-      {/* <mesh
-        ref={flameRef}
-        position={[
-          4,
-          jetPlacement.y * 0.9,
-          jetPlacement.z * 1.6,
-        ]}
-      >
-        <sphereGeometry args={[1]} />
-        <FakeGlowMaterial glowColor="#0098db" />
-      </mesh> */}
-    </>
-  );
-}
-
-const Bloom = React.memo(({ jetRefs } : {
-  jetRefs: Array<MeshRef>;
-}) => {
-  /** This only exists to appease the SelectiveBloom component */
-  const dummyLightRef = React.useRef(null!);
-
-  return (
-    <>
-      <pointLight ref={dummyLightRef} position={[0, 0, 0]} intensity={0} />
-      <EffectComposer multisampling={0}>
-        <SelectiveBloom
-          lights={[dummyLightRef]}
-          mipmapBlur
-          selection={jetRefs}
-          kernelSize={KernelSize.VERY_SMALL}
-        />
-      </EffectComposer>
-    </>
-  );
-});
 
 export function XWing({
   xWingRef,
@@ -304,19 +219,8 @@ export function XWing({
     React.useRef<THREE.Mesh>(null!),
   ];
 
-  useFrame((state) => {
-    const jetLength = 3;
-    const scale = 0.05 * Math.sin(30 * state.clock.elapsedTime) + 0.8;
-    // console.log(scale);
-    jetRefs.forEach(jetRef => {
-      jetRef.current.scale.set(jetLength * scale, scale, scale);
-    });
-  });
-
   return (
     <group name="x_wing" {...groupProps} ref={xWingRef} dispose={null}>
-      {/* <Bloom jetRefs={jetRefs} /> */}
-
       <group name="Scene" rotation={STARTING_DIRECTION_CORRECTION}>
         <group name="yaw_box" ref={yawBoxRef}>
           <group name="pitch_and_roll_box" ref={pitchAndRollBoxRef}>

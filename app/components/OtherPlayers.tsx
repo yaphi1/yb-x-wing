@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { useOthers } from '@liveblocks/react/suspense';
 import { useFrame } from '@react-three/fiber';
-import { XWing } from './XWing';
+import { XWing } from './XWing/XWing';
 import { useRef } from 'react';
 import { type Presence } from '../helpers/multiplayerConfig';
 import { updateWings, WingRefs } from '../helpers/wingHelpers';

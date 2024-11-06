@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { PerspectiveCamera, useKeyboardControls } from '@react-three/drei';
-import { XWing } from './XWing';
+import { XWing } from './XWing/XWing';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { JsonObject, useUpdateMyPresence } from '@liveblocks/react';
