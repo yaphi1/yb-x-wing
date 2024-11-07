@@ -1,8 +1,7 @@
 import * as THREE from 'three';
 import React, { useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
-
-const glsl = (x: TemplateStringsArray) => x.join(' ');
+import { glsl, perlinNoise, random2D } from './shaderHelpers';
 
 type MeshRef = React.MutableRefObject<THREE.Mesh>;
 
@@ -17,14 +16,19 @@ export const JetPlacement: Record<string, JetPlacementCoefficients> = {
   bottomLeft: { y: -1, z: 1 },
 } as const;
 
-const radiusTop = 0.3;
+const radiusTop = 0.26;
 const radiusBottom = 0.1;
-const height = 2.5;
+const height = 2.2;
 const radialSegments = 32;
 const heightSegments = 1;
 const isOpenEnded = true;
 
-const vertexShader = glsl`
+const vertexHelpers = [
+  random2D,
+].join(' ');
+const vertexShader = vertexHelpers + glsl`
+  uniform float uTime;
+
   varying vec2 vUv;
 
   void main() {
@@ -34,53 +38,16 @@ const vertexShader = glsl`
   }
 `;
 
-const fragmentShader = glsl`
+const fragmentHelpers = [
+  perlinNoise,
+].join(' ');
+const fragmentShader = fragmentHelpers + glsl`
   uniform float uTime;
 
   varying vec2 vUv;
 
-  //	Classic Perlin 2D Noise 
-  //	by Stefan Gustavson
-  vec4 permute(vec4 x) {
-      return mod(((x*34.0)+1.0)*x, 289.0);
-  }
-  vec2 fade(vec2 t) {
-      return t*t*t*(t*(t*6.0-15.0)+10.0);
-  }
-  float cnoise(vec2 P) {
-    vec4 Pi = floor(P.xyxy) + vec4(0.0, 0.0, 1.0, 1.0);
-    vec4 Pf = fract(P.xyxy) - vec4(0.0, 0.0, 1.0, 1.0);
-    Pi = mod(Pi, 289.0); // To avoid truncation effects in permutation
-    vec4 ix = Pi.xzxz;
-    vec4 iy = Pi.yyww;
-    vec4 fx = Pf.xzxz;
-    vec4 fy = Pf.yyww;
-    vec4 i = permute(permute(ix) + iy);
-    vec4 gx = 2.0 * fract(i * 0.0243902439) - 1.0; // 1/41 = 0.024...
-    vec4 gy = abs(gx) - 0.5;
-    vec4 tx = floor(gx + 0.5);
-    gx = gx - tx;
-    vec2 g00 = vec2(gx.x,gy.x);
-    vec2 g10 = vec2(gx.y,gy.y);
-    vec2 g01 = vec2(gx.z,gy.z);
-    vec2 g11 = vec2(gx.w,gy.w);
-    vec4 norm = 1.79284291400159 - 0.85373472095314 * vec4(dot(g00, g00), dot(g01, g01), dot(g10, g10), dot(g11, g11));
-    g00 *= norm.x;
-    g01 *= norm.y;
-    g10 *= norm.z;
-    g11 *= norm.w;
-    float n00 = dot(g00, vec2(fx.x, fy.x));
-    float n10 = dot(g10, vec2(fx.y, fy.y));
-    float n01 = dot(g01, vec2(fx.z, fy.z));
-    float n11 = dot(g11, vec2(fx.w, fy.w));
-    vec2 fade_xy = fade(Pf.xy);
-    vec2 n_x = mix(vec2(n00, n01), vec2(n10, n11), fade_xy.x);
-    float n_xy = mix(n_x.x, n_x.y, fade_xy.y);
-    return 2.3 * n_xy;
-  }
-
   void main() {
-    float sinusoid = sin(20.0 * uTime);
+    float sinusoid = sin(30.0 * uTime);
     float r = vUv.y;
     float g = vUv.y * 0.5 + 0.5;
     float b = 1.0;
@@ -89,8 +56,7 @@ const fragmentShader = glsl`
     // original flickering gradient
     gl_FragColor = vec4(r, g, b, a + sin(vUv.y * sinusoid * 0.2));
 
-
-    float strength = cnoise(vec2(
+    float strength = perlinNoise(vec2(
         vUv.x * 2.0,
         vUv.y * 0.2 + uTime * 0.5
     ) * 30.0);
@@ -105,45 +71,103 @@ const fragmentShader = glsl`
   }
 `;
 
+const fragmentShaderInner = glsl`
+  uniform float uTime;
+
+  varying vec2 vUv;
+
+  void main() {
+    float sinusoid = sin(20.0 * uTime + 5.0);
+    float r = 1.0;
+    float g = 1.0;
+    float b = 1.0;
+    // float a = vUv.y;
+    // float a = 0.5 * (sinusoid + 1.0);
+    float a = 0.6;
+
+    gl_FragColor = vec4(r, g, b, a);
+  }
+`;
+
 export function JetFlame({ flameRef, jetPlacement } : {
   flameRef: MeshRef;
   jetPlacement: JetPlacementCoefficients;
 }) {
   const shaderRef = useRef<THREE.ShaderMaterial>(null!);
+  const shaderRefInner = useRef<THREE.ShaderMaterial>(null!);
+  const flameRefInner = useRef<THREE.Mesh>(null!);
   const uniforms = useMemo(() => ({
     uTime: { value: 0.0 },
   }), []);
 
   useFrame((state) => {
     shaderRef.current.uniforms.uTime.value = state.clock.getElapsedTime();
+    shaderRefInner.current.uniforms.uTime.value = state.clock.getElapsedTime();
+    flameRefInner.current.scale.y = 9 + 0.1 * Math.sin(40 * state.clock.getElapsedTime());
   });
 
   return (
-    <mesh
-      ref={flameRef}
-      position={[
-        3.6,
-        jetPlacement.y * 0.9,
-        jetPlacement.z * 1.6,
-      ]}
-      rotation-z={0.5 * Math.PI}
-    >
-      <cylinderGeometry args={[
-        radiusTop,
-        radiusBottom,
-        height,
-        radialSegments,
-        heightSegments,
-        isOpenEnded,
-      ]} />
-      <shaderMaterial
-        ref={shaderRef}
-        vertexShader={vertexShader}
-        fragmentShader={fragmentShader}
-        side={THREE.FrontSide}
-        transparent={true}
-        uniforms={uniforms}
-      />
-    </mesh>
+    <>
+      <mesh
+        ref={flameRef}
+        position={[
+          4.1,
+          jetPlacement.y * 0.9,
+          jetPlacement.z * 1.6,
+        ]}
+        rotation-z={0.5 * Math.PI}
+      >
+        <cylinderGeometry
+          args={[
+            radiusTop,
+            radiusBottom,
+            height,
+            radialSegments,
+            heightSegments,
+            isOpenEnded,
+          ]}
+        />
+        <shaderMaterial
+          ref={shaderRef}
+          vertexShader={vertexShader}
+          fragmentShader={fragmentShader}
+          side={THREE.FrontSide}
+          transparent={true}
+          uniforms={uniforms}
+        />
+      </mesh>
+      <mesh
+        ref={flameRefInner}
+        position={[
+          3.1,
+          jetPlacement.y * 0.9,
+          jetPlacement.z * 1.6,
+        ]}
+        rotation-z={0.5 * Math.PI}
+      >
+        {/* <cylinderGeometry
+          args={[
+            radiusTop * 0.9,
+            radiusBottom * 0.9,
+            height * 0.9,
+            radialSegments,
+            heightSegments,
+            isOpenEnded,
+          ]}
+        /> */}
+        <sphereGeometry args={[
+          radiusTop * 0.6
+        ]}/>
+        <shaderMaterial
+          ref={shaderRefInner}
+          vertexShader={vertexShader}
+          fragmentShader={fragmentShaderInner}
+          side={THREE.FrontSide}
+          transparent={true}
+          uniforms={uniforms}
+        />
+        {/* <meshStandardMaterial color={'#ffffff'}/> */}
+      </mesh>
+    </>
   );
 }
