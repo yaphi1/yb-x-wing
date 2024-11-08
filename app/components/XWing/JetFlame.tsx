@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import React, { useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { glsl, perlinNoise, random2D } from './shaderHelpers';
+import { glsl } from './shaderHelpers';
 
 type MeshRef = React.MutableRefObject<THREE.Mesh>;
 
@@ -23,66 +23,74 @@ const radialSegments = 32;
 const heightSegments = 1;
 const isOpenEnded = true;
 
-const vertexHelpers = [
-  random2D,
-].join(' ');
-const vertexShader = vertexHelpers + glsl`
+const vertexShader = glsl`
   uniform float uTime;
+  uniform float uRandomSeed;
 
   varying vec2 vUv;
 
   void main() {
-    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+    vec3 modifiedPosition = position;
+    modifiedPosition.x *= 0.1 * (sin(uTime * 20.0 + uRandomSeed) + 1.0) + 0.8;
+    modifiedPosition.z *= 0.1 * (sin(uTime * 20.0 + uRandomSeed + 2.0) + 1.0) + 0.8;
+    modifiedPosition.y *= (1.0 - position.y) * 0.05 * (sin(uTime * 20.0 + uRandomSeed) + 1.0) + 1.0;
+
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(modifiedPosition, 1.0);
     
     vUv = uv;
   }
 `;
 
-const fragmentHelpers = [
-  perlinNoise,
-].join(' ');
-const fragmentShader = fragmentHelpers + glsl`
+const vertexShaderInner = glsl`
   uniform float uTime;
+  uniform float uRandomSeed;
 
   varying vec2 vUv;
 
   void main() {
-    float sinusoid = sin(30.0 * uTime);
+    vec3 modifiedPosition = position;
+    float timingOffsetFromOuterFlame = 2.0;
+    modifiedPosition.x *= 0.1 * (sin(uTime * 60.0) + 1.0) + 0.8;
+    modifiedPosition.y *= (1.0 - position.y)
+      * 0.05
+      * (sin(uTime * 20.0 + uRandomSeed + timingOffsetFromOuterFlame) + 1.0)
+      + 1.0
+    ;
+
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(modifiedPosition, 1.0);
+    
+    vUv = uv;
+  }
+`;
+
+const fragmentShader = glsl`
+  uniform float uTime;
+  uniform float uRandomSeed;
+
+  varying vec2 vUv;
+
+  void main() {
+    float sinusoid = sin(30.0 * (uTime + uRandomSeed));
     float r = vUv.y;
     float g = vUv.y * 0.5 + 0.5;
     float b = 1.0;
     float a = vUv.y;
 
-    // original flickering gradient
     gl_FragColor = vec4(r, g, b, a + sin(vUv.y * sinusoid * 0.2));
-
-    float strength = perlinNoise(vec2(
-        vUv.x * 2.0,
-        vUv.y * 0.2 + uTime * 0.5
-    ) * 30.0);
-
-    // noise version
-    // gl_FragColor = vec4(
-    //     strength * r, 
-    //     strength * g,
-    //     strength * b,
-    //     strength * (a + sin(vUv.y * sinusoid * 0.2))
-    // );
   }
 `;
 
 const fragmentShaderInner = glsl`
   uniform float uTime;
+  uniform float uRandomSeed;
 
   varying vec2 vUv;
 
   void main() {
-    float sinusoid = sin(20.0 * uTime + 5.0);
+    float sinusoid = sin(20.0 * (uTime + uRandomSeed) + 5.0);
     float r = 1.0;
     float g = 1.0;
     float b = 1.0;
-    // float a = vUv.y;
-    // float a = 0.5 * (sinusoid + 1.0);
     float a = 0.6;
 
     gl_FragColor = vec4(r, g, b, a);
@@ -98,6 +106,7 @@ export function JetFlame({ flameRef, jetPlacement } : {
   const flameRefInner = useRef<THREE.Mesh>(null!);
   const uniforms = useMemo(() => ({
     uTime: { value: 0.0 },
+    uRandomSeed: { value: Math.random() * 10 },
   }), []);
 
   useFrame((state) => {
@@ -145,28 +154,17 @@ export function JetFlame({ flameRef, jetPlacement } : {
         ]}
         rotation-z={0.5 * Math.PI}
       >
-        {/* <cylinderGeometry
-          args={[
-            radiusTop * 0.9,
-            radiusBottom * 0.9,
-            height * 0.9,
-            radialSegments,
-            heightSegments,
-            isOpenEnded,
-          ]}
-        /> */}
         <sphereGeometry args={[
           radiusTop * 0.6
         ]}/>
         <shaderMaterial
           ref={shaderRefInner}
-          vertexShader={vertexShader}
+          vertexShader={vertexShaderInner}
           fragmentShader={fragmentShaderInner}
           side={THREE.FrontSide}
           transparent={true}
           uniforms={uniforms}
         />
-        {/* <meshStandardMaterial color={'#ffffff'}/> */}
       </mesh>
     </>
   );
