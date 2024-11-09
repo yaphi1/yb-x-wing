@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import React, { useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { glsl } from './shaderHelpers';
+import { useControls } from 'leva';
 
 type MeshRef = React.MutableRefObject<THREE.Mesh>;
 
@@ -18,7 +19,7 @@ export const JetPlacement: Record<string, JetPlacementCoefficients> = {
 
 const radiusTop = 0.26;
 const radiusBottom = 0.1;
-const height = 2.2;
+const cylinderLength = 2.2;
 const radialSegments = 32;
 const heightSegments = 1;
 const isOpenEnded = true;
@@ -66,14 +67,16 @@ const vertexShaderInner = glsl`
 const fragmentShader = glsl`
   uniform float uTime;
   uniform float uRandomSeed;
+  uniform float uHeat;
 
   varying vec2 vUv;
 
   void main() {
     float sinusoid = sin(30.0 * (uTime + uRandomSeed));
-    float r = vUv.y;
+    float r = vUv.y + (1.0 - uHeat);
     float g = vUv.y * 0.5 + 0.5;
-    float b = 1.0;
+    // float b = 1.0;
+    float b = vUv.y + uHeat;
     float a = vUv.y;
 
     gl_FragColor = vec4(r, g, b, a + sin(vUv.y * sinusoid * 0.2));
@@ -101,36 +104,46 @@ export function JetFlame({ flameRef, jetPlacement } : {
   flameRef: MeshRef;
   jetPlacement: JetPlacementCoefficients;
 }) {
+  const jet = useControls('Jet Controls', {
+    strength: { value: 1, min: 0, max: 1 },
+    heat: { value: 1, min: 0, max: 1 },
+  });
+
   const shaderRef = useRef<THREE.ShaderMaterial>(null!);
   const shaderRefInner = useRef<THREE.ShaderMaterial>(null!);
   const flameRefInner = useRef<THREE.Mesh>(null!);
   const uniforms = useMemo(() => ({
     uTime: { value: 0.0 },
     uRandomSeed: { value: Math.random() * 10 },
+    uHeat: { value: 1.0 },
   }), []);
 
   useFrame((state) => {
     shaderRef.current.uniforms.uTime.value = state.clock.getElapsedTime();
+    shaderRef.current.uniforms.uHeat.value = jet.heat;
     shaderRefInner.current.uniforms.uTime.value = state.clock.getElapsedTime();
     flameRefInner.current.scale.y = 9 + 0.1 * Math.sin(40 * state.clock.getElapsedTime());
   });
 
   return (
-    <>
+    <group
+      position={[
+        1.9,
+        jetPlacement.y * 0.9,
+        jetPlacement.z * 1.6,
+      ]}
+      scale-x={jet.strength}
+    >
       <mesh
         ref={flameRef}
-        position={[
-          4.1,
-          jetPlacement.y * 0.9,
-          jetPlacement.z * 1.6,
-        ]}
+        position-x={cylinderLength}
         rotation-z={0.5 * Math.PI}
       >
         <cylinderGeometry
           args={[
             radiusTop,
             radiusBottom,
-            height,
+            cylinderLength,
             radialSegments,
             heightSegments,
             isOpenEnded,
@@ -147,11 +160,7 @@ export function JetFlame({ flameRef, jetPlacement } : {
       </mesh>
       <mesh
         ref={flameRefInner}
-        position={[
-          3.1,
-          jetPlacement.y * 0.9,
-          jetPlacement.z * 1.6,
-        ]}
+        position-x={cylinderLength - 1}
         rotation-z={0.5 * Math.PI}
       >
         <sphereGeometry args={[
@@ -166,6 +175,6 @@ export function JetFlame({ flameRef, jetPlacement } : {
           uniforms={uniforms}
         />
       </mesh>
-    </>
+    </group>
   );
 }
