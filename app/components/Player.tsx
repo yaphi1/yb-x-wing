@@ -8,22 +8,22 @@ import { type Presence } from '../helpers/multiplayerConfig';
 import { isMultiplayerEnabled } from '../helpers/globalFlags';
 import { boundaryDistance, isOutOfBounds } from './Ground';
 import { updateWings, type WingRefs } from '../helpers/wingHelpers';
-
-const startingSpeed = 1;
-const minSpeed = 0;
-const topSpeed = 200;
-const acceleration = 100;
-const turnStrength = 1;
-const rollAmount = 0.6;
-const rollSpeed = 2;
-const pitchAmount = 0.6;
-const pitchSpeed = 2;
-const yawAmount = 0.3;
-const yawSpeed = 2;
-const groundClippingBuffer = pitchAmount / pitchSpeed * startingSpeed;
-const lowestPosition = 20 + groundClippingBuffer;
-const zoomSpeed = 10;
-const verticalCameraSpeed = 10;
+import {
+  startingSpeed,
+  minSpeed,
+  topSpeed,
+  acceleration,
+  turnStrength,
+  rollAmount,
+  rollSpeed,
+  pitchAmount,
+  pitchSpeed,
+  yawAmount,
+  yawSpeed,
+  lowestPosition,
+  zoomSpeed,
+  verticalCameraSpeed,
+} from './XWing/vehicleAndCamConfig';
 
 const TURN_DIRECTION = {
   LEFT: 1,
@@ -311,6 +311,7 @@ export function Player({
         swayBoxRef={swayBoxRef}
         yawBoxRef={yawBoxRef}
         wingRefs={wingRefs}
+        speedRef={speed}
       />
       <PerspectiveCamera ref={cameraRef} makeDefault fov={50} />
     </group>

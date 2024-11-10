@@ -11,11 +11,19 @@ const emptyRef = { current: null! };
 const secondsBetweenPositionSyncs = 5;
 const lerpIncrement = 0.5;
 
+/**
+ * Just the 3D version of the Pythagorean theorem
+ */
+function getSpeedFromVelocity(velocity: [number, number, number]) {
+  return Math.sqrt(velocity[0]**2 + velocity[1]**2 + velocity[2]**2);
+}
+
 export function OtherPlayers() {
   const otherPlayers = useOthers();
   const otherXWings = useRef<Record<string, NestedRef>>({});
   const otherPitchAndRollBoxes = useRef<Record<string, NestedRef>>({});
   const otherWingRefs = useRef<Record<string, WingRefs>>({});
+  const otherSpeedRefs = useRef<Record<string, React.MutableRefObject<number>>>({});
 
   const frameCount = useRef(0);
 
@@ -25,6 +33,7 @@ export function OtherPlayers() {
       const otherPlayerXWing = otherXWings.current[otherPlayer.connectionId].current;
       const otherPitchAndRollBox = otherPitchAndRollBoxes.current[otherPlayer.connectionId].current;
       const otherPlayerWingRefs = otherWingRefs.current[otherPlayer.connectionId];
+      const otherPlayerSpeedRef = otherSpeedRefs.current[otherPlayer.connectionId];
       const { areWingsOpen } = otherPlayerPresence;
 
       // re-sync position at a given time interval
@@ -32,6 +41,7 @@ export function OtherPlayers() {
         otherPlayerXWing.position.set(...otherPlayerPresence.position);
       }
       otherPlayerXWing.position.add(new THREE.Vector3(...otherPlayerPresence.velocity));
+      otherPlayerSpeedRef.current = getSpeedFromVelocity(otherPlayerPresence.velocity);
 
       otherPlayerXWing.quaternion.slerp(new THREE.Quaternion(...otherPlayerPresence.quaternion), lerpIncrement);
       otherPitchAndRollBox.quaternion.slerp(new THREE.Quaternion(...otherPlayerPresence.pitchAndRollBoxQuaternion), lerpIncrement);
@@ -57,6 +67,7 @@ export function OtherPlayers() {
               topRight: {...emptyRef},
               bottomRight: {...emptyRef},
             }}
+            speedRef={otherSpeedRefs.current[otherPlayer.connectionId]}
           />
         </group>
       ))}

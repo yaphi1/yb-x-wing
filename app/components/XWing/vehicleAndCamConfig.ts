@@ -1,0 +1,15 @@
+export const startingSpeed = 1;
+export const minSpeed = 0;
+export const topSpeed = 300;
+export const acceleration = 100;
+export const turnStrength = 1;
+export const rollAmount = 0.6;
+export const rollSpeed = 2;
+export const pitchAmount = 0.6;
+export const pitchSpeed = 2;
+export const yawAmount = 0.3;
+export const yawSpeed = 2;
+export const zoomSpeed = 10;
+export const verticalCameraSpeed = 10;
+export const safeDistanceFromGround = pitchAmount / pitchSpeed * startingSpeed;
+export const lowestPosition = 20 + safeDistanceFromGround;

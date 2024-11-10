@@ -3,6 +3,7 @@ import React, { useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { glsl } from './shaderHelpers';
 import { useControls } from 'leva';
+import { topSpeed } from './vehicleAndCamConfig';
 
 type MeshRef = React.MutableRefObject<THREE.Mesh>;
 
@@ -100,15 +101,22 @@ const fragmentShaderInner = glsl`
   }
 `;
 
-export function JetFlame({ flameRef, jetPlacement } : {
+const jet = {
+  strength: 0,
+  heat: 1,
+};
+
+export function JetFlame({ flameRef, jetPlacement, speedRef } : {
   flameRef: MeshRef;
   jetPlacement: JetPlacementCoefficients;
+  speedRef: React.MutableRefObject<number>;
 }) {
-  const jet = useControls('Jet Controls', {
-    strength: { value: 1, min: 0, max: 1 },
-    heat: { value: 1, min: 0, max: 1 },
-  });
+  // const jet = useControls('Jet Controls', {
+  //   strength: { value: 1, min: 0, max: 1 },
+  //   heat: { value: 1, min: 0, max: 1 },
+  // });
 
+  const jetContainerRef = useRef<THREE.Group>(null!);
   const shaderRef = useRef<THREE.ShaderMaterial>(null!);
   const shaderRefInner = useRef<THREE.ShaderMaterial>(null!);
   const flameRefInner = useRef<THREE.Mesh>(null!);
@@ -119,20 +127,29 @@ export function JetFlame({ flameRef, jetPlacement } : {
   }), []);
 
   useFrame((state) => {
+    jet.strength = 0.7 * (speedRef.current / topSpeed) + 0.3;
+    jet.heat = Math.max(2 * ((speedRef.current / topSpeed) - 0.5), 0);
+
     shaderRef.current.uniforms.uTime.value = state.clock.getElapsedTime();
     shaderRef.current.uniforms.uHeat.value = jet.heat;
     shaderRefInner.current.uniforms.uTime.value = state.clock.getElapsedTime();
     flameRefInner.current.scale.y = 9 + 0.1 * Math.sin(40 * state.clock.getElapsedTime());
+
+    jetContainerRef.current.scale.x = jet.strength;
+
+    // @ts-expect-error
+    window.speedRef = speedRef.current;
   });
 
   return (
     <group
+      ref={jetContainerRef}
       position={[
         1.9,
         jetPlacement.y * 0.9,
         jetPlacement.z * 1.6,
       ]}
-      scale-x={jet.strength}
+      // scale-x={jet.strength}
     >
       <mesh
         ref={flameRef}

@@ -202,6 +202,7 @@ export function XWing({
   swayBoxRef,
   yawBoxRef,
   wingRefs,
+  speedRef,
   ...groupProps
 } : {
   xWingRef?: GroupRef;
@@ -209,6 +210,7 @@ export function XWing({
   swayBoxRef?: GroupRef;
   yawBoxRef?: GroupRef;
   wingRefs?: WingRefs;
+  speedRef: React.MutableRefObject<number>;
 } & JSX.IntrinsicElements['group']) {
   const { nodes, materials } = useGLTF('/models/x-wing-openable.glb') as GLTFResult;
 
@@ -227,7 +229,11 @@ export function XWing({
             <group name="sway_box" ref={swayBoxRef}>
               <group name="new_model">
                 <group name="wing_top_right" ref={wingRefs?.topRight} position={[3.414, 0, 0]}>
-                  <JetFlame flameRef={jetRefs[0]} jetPlacement={JetPlacement.topRight}/>
+                  <JetFlame
+                    speedRef={speedRef}
+                    flameRef={jetRefs[0]}
+                    jetPlacement={JetPlacement.topRight}
+                  />
                   <mesh
                     name="Cube044"
                     geometry={nodes.Cube044.geometry}
@@ -392,7 +398,11 @@ export function XWing({
                   />
                 </group>
                 <group name="wing_bottom_right" ref={wingRefs?.bottomRight} position={[3.414, 0, 0]}>
-                  <JetFlame flameRef={jetRefs[1]} jetPlacement={JetPlacement.bottomRight}/>
+                  <JetFlame
+                    speedRef={speedRef}
+                    flameRef={jetRefs[1]}
+                    jetPlacement={JetPlacement.bottomRight}
+                  />
                   <mesh
                     name="Cube059"
                     geometry={nodes.Cube059.geometry}
@@ -557,7 +567,11 @@ export function XWing({
                   />
                 </group>
                 <group name="wing_top_left" ref={wingRefs?.topLeft} position={[3.414, 0, 0]}>
-                  <JetFlame flameRef={jetRefs[2]} jetPlacement={JetPlacement.topLeft}/>
+                  <JetFlame
+                    speedRef={speedRef}
+                    flameRef={jetRefs[2]}
+                    jetPlacement={JetPlacement.topLeft}
+                  />
                   <mesh
                     name="Cube064"
                     geometry={nodes.Cube064.geometry}
@@ -722,7 +736,11 @@ export function XWing({
                   />
                 </group>
                 <group name="wing_bottom_left" ref={wingRefs?.bottomLeft} position={[3.414, 0, 0]}>
-                  <JetFlame flameRef={jetRefs[3]} jetPlacement={JetPlacement.bottomLeft}/>
+                  <JetFlame
+                    speedRef={speedRef}
+                    flameRef={jetRefs[3]}
+                    jetPlacement={JetPlacement.bottomLeft}
+                  />
                   <mesh
                     name="Cube069"
                     geometry={nodes.Cube069.geometry}
