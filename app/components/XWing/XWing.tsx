@@ -4,11 +4,12 @@ Modified manually afterwards to add functionality.
 */
 
 import * as THREE from 'three';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useGLTF } from '@react-three/drei';
 import { GLTF } from 'three-stdlib';
 import { type WingRefs } from '../../helpers/wingHelpers';
 import { JetFlame, JetPlacement } from './JetFlame';
+import { useColors } from './useColors';
 
 const STARTING_DIRECTION_CORRECTION = new THREE.Euler(0, -0.5 * Math.PI, 0);
 
@@ -212,6 +213,11 @@ export function XWing({
   speedRef: React.MutableRefObject<number>;
 } & JSX.IntrinsicElements['group']) {
   const { nodes, materials } = useGLTF('/models/x-wing-openable.glb') as GLTFResult;
+  const { bodyColor } = useColors();
+
+  useEffect(() => {
+    materials.body_material.color.set(bodyColor);
+  }, [materials, bodyColor]);
 
   const jetRefs = [
     React.useRef<THREE.Mesh>(null!),
