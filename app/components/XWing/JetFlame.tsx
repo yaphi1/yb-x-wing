@@ -1,8 +1,7 @@
 import * as THREE from 'three';
 import React, { useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { glsl } from './shaderHelpers';
-import { useControls } from 'leva';
+import { glsl, hslToRgb } from './shaderHelpers';
 import { topSpeed } from './vehicleAndCamConfig';
 
 type MeshRef = React.MutableRefObject<THREE.Mesh>;
@@ -65,7 +64,7 @@ const vertexShaderInner = glsl`
   }
 `;
 
-const fragmentShader = glsl`
+const heatBasedFragmentShader = hslToRgb + glsl`
   uniform float uTime;
   uniform float uRandomSeed;
   uniform float uHeat;
@@ -76,11 +75,29 @@ const fragmentShader = glsl`
     float sinusoid = sin(30.0 * (uTime + uRandomSeed));
     float r = vUv.y + (1.0 - uHeat);
     float g = vUv.y * 0.5 + 0.5;
-    // float b = 1.0;
     float b = vUv.y + uHeat;
-    float a = vUv.y;
+    float a = vUv.y + sin(vUv.y * sinusoid * 0.2);
 
-    gl_FragColor = vec4(r, g, b, a + sin(vUv.y * sinusoid * 0.2));
+    gl_FragColor = vec4(r, g, b, a);
+  }
+`;
+
+const colorBasedFragmentShader = hslToRgb + glsl`
+  uniform float uTime;
+  uniform float uRandomSeed;
+
+  varying vec2 vUv;
+
+  void main() {
+    float sinusoid = sin(30.0 * (uTime + uRandomSeed));
+    float maxLightness = 1.0;
+    float minLightness = 0.4;
+    float lightness = vUv.y * (maxLightness - minLightness) + minLightness;
+    float hue = 150.0;
+    vec3 rgb = hslToRgb(hue, 1.0, lightness);
+    float a = vUv.y + sin(vUv.y * sinusoid * 0.2);
+
+    gl_FragColor = vec4(rgb, a);
   }
 `;
 
@@ -111,11 +128,6 @@ export function JetFlame({ flameRef, jetPlacement, speedRef } : {
   jetPlacement: JetPlacementCoefficients;
   speedRef: React.MutableRefObject<number>;
 }) {
-  // const jet = useControls('Jet Controls', {
-  //   strength: { value: 1, min: 0, max: 1 },
-  //   heat: { value: 1, min: 0, max: 1 },
-  // });
-
   const jetContainerRef = useRef<THREE.Group>(null!);
   const shaderRef = useRef<THREE.ShaderMaterial>(null!);
   const shaderRefInner = useRef<THREE.ShaderMaterial>(null!);
@@ -136,9 +148,6 @@ export function JetFlame({ flameRef, jetPlacement, speedRef } : {
     flameRefInner.current.scale.y = 9 + 0.1 * Math.sin(40 * state.clock.getElapsedTime());
 
     jetContainerRef.current.scale.x = jet.strength;
-
-    // @ts-expect-error
-    window.speedRef = speedRef.current;
   });
 
   return (
@@ -149,7 +158,6 @@ export function JetFlame({ flameRef, jetPlacement, speedRef } : {
         jetPlacement.y * 0.9,
         jetPlacement.z * 1.6,
       ]}
-      // scale-x={jet.strength}
     >
       <mesh
         ref={flameRef}
@@ -169,7 +177,7 @@ export function JetFlame({ flameRef, jetPlacement, speedRef } : {
         <shaderMaterial
           ref={shaderRef}
           vertexShader={vertexShader}
-          fragmentShader={fragmentShader}
+          fragmentShader={heatBasedFragmentShader}
           side={THREE.FrontSide}
           transparent={true}
           uniforms={uniforms}

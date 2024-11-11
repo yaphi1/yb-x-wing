@@ -49,3 +49,25 @@ export const perlinNoise = glsl`
     return 2.3 * n_xy;
   }
 `;
+
+/**
+ * Input: h as an angle in [0,360] and s,l in [0,1]
+ * Output: r,g,b in [0,1]
+ * Credit: https://stackoverflow.com/a/64090995
+ */
+export const hslToRgb = glsl`
+  float getColorComponent(float n, float h, float s, float l) {
+    float a = s * min(l, 1.0 - l);
+    float k = mod(n + h/30.0, 12.0);
+    return l - a * max(-1.0, min(min(k - 3.0, 9.0 - k), 1.0));
+  }
+
+  vec3 hslToRgb(float h, float s, float l) {
+    float a = s * min(l, 1.0 - l);
+    return vec3(
+      getColorComponent(0.0, h, s, l), 
+      getColorComponent(8.0, h, s, l), 
+      getColorComponent(4.0, h, s, l)
+    );
+  }
+`;
