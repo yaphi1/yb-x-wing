@@ -4,11 +4,10 @@ Modified manually afterwards to add functionality.
 */
 
 import * as THREE from 'three';
-import React, { useMemo, useRef } from 'react';
+import React from 'react';
 import { useGLTF } from '@react-three/drei';
 import { GLTF } from 'three-stdlib';
 import { type WingRefs } from '../../helpers/wingHelpers';
-import { useFrame } from '@react-three/fiber';
 import { JetFlame, JetPlacement } from './JetFlame';
 
 const STARTING_DIRECTION_CORRECTION = new THREE.Euler(0, -0.5 * Math.PI, 0);

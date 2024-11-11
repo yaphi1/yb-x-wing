@@ -6,7 +6,7 @@ export const useDebugMode = () => {
   const [isDebugMode, setIsDebugMode] = useState(false);
   useEffect(() => {
     setIsDebugMode(window.location.hash === '#debug');
-  }, [window.location]);
+  }, []);
 
   return { isDebugMode };
 };

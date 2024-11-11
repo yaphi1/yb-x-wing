@@ -24,6 +24,8 @@ const radialSegments = 32;
 const heightSegments = 1;
 const isOpenEnded = true;
 
+const isCustomJetColorEnabled = false;
+
 const vertexShader = glsl`
   uniform float uTime;
   uniform float uRandomSeed;
@@ -177,7 +179,7 @@ export function JetFlame({ flameRef, jetPlacement, speedRef } : {
         <shaderMaterial
           ref={shaderRef}
           vertexShader={vertexShader}
-          fragmentShader={heatBasedFragmentShader}
+          fragmentShader={isCustomJetColorEnabled ? colorBasedFragmentShader : heatBasedFragmentShader}
           side={THREE.FrontSide}
           transparent={true}
           uniforms={uniforms}

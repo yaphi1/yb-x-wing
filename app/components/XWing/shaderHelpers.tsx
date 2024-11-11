@@ -1,4 +1,4 @@
-export const glsl = (x: TemplateStringsArray, ...rest: Array<string>) => x.join(' ');
+export const glsl = (x: TemplateStringsArray) => x.join(' ');
 
 export const random2D = glsl`
   float random2D(vec2 value) {
