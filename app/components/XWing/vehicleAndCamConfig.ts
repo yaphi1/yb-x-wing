@@ -1,4 +1,4 @@
-export const startingSpeed = 1;
+export const startingSpeed = 200;
 export const minSpeed = 0;
 export const topSpeed = 300;
 export const acceleration = 100;

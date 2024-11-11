@@ -1,4 +1,4 @@
-import { isDebugMode } from '../helpers/globalFlags';
+import { useDebugMode } from '../helpers/globalFlags';
 import { Grid } from './Grid';
 import { Sand } from './Sand';
 
@@ -37,6 +37,8 @@ function generateTileCoordinates({ numberOfTileRingsAroundCenter }: {
 const tileCoordinates = generateTileCoordinates({ numberOfTileRingsAroundCenter });
 
 export function Ground() {
+  const { isDebugMode } = useDebugMode();
+
   return (
     <>
       {isDebugMode && <Grid />}
