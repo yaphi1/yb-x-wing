@@ -5,16 +5,20 @@ import { Canvas } from '@react-three/fiber';
 import { Environment } from '@react-three/drei';
 import { Keyboard } from './Keyboard';
 import { Player } from './Player';
-import { isMultiplayerEnabled } from '../helpers/globalFlags';
+import { isMultiplayerEnabled, useDebugMode } from '../helpers/globalFlags';
 import { OtherPlayers } from './OtherPlayers';
 import { Ground } from './Ground';
 import { Fog } from './Fog';
-
+import { Stats } from '@react-three/drei';
 
 export function Experience() {
+  const { isDebugMode } = useDebugMode();
+
   return (
     <Keyboard>
       <Canvas>
+        {isDebugMode && <Stats />}
+        <color args={ [ '#ffe8e8' ] } attach="background" />
         <Environment preset="dawn" />
         <Fog color="#ffe8e8" near={200} far={2000} />
         <Ground />
