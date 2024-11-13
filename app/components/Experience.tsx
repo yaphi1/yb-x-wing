@@ -10,9 +10,40 @@ import { OtherPlayers } from './OtherPlayers';
 import { Ground } from './Ground';
 import { Fog } from './Fog';
 import { Stats } from '@react-three/drei';
+import { useControls } from 'leva';
 
 export function Experience() {
   const { isDebugMode } = useDebugMode();
+
+  useControls(
+    'Controls',
+    {
+      'Move': {
+        value: 'Arrows',
+        editable: false,
+      },
+      'Speed': {
+        value: 'r/f',
+        editable: false,
+      },
+      'Camera': {
+        value: 'w/a/s/d/q/e',
+        editable: false,
+      },
+      'Wings': {
+        value: 't',
+        editable: false,
+      },
+      'Pause': {
+        value: 'p',
+        editable: false,
+      },
+      'Reset': {
+        value: 'n',
+        editable: false,
+      },
+    },
+  );
 
   return (
     <Keyboard>
