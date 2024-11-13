@@ -40,9 +40,9 @@ const PITCH_DIRECTION = {
 type PitchDirection = typeof PITCH_DIRECTION[keyof typeof PITCH_DIRECTION];
 
 const axes = {
-	x: new THREE.Vector3(1, 0, 0),
-	y: new THREE.Vector3(0, 1, 0),
-	z: new THREE.Vector3(0, 0, 1),
+  x: new THREE.Vector3(1, 0, 0),
+  y: new THREE.Vector3(0, 1, 0),
+  z: new THREE.Vector3(0, 0, 1),
 } as const;
 
 const initialPosition = new THREE.Vector3(0, lowestPosition + 20, 0);

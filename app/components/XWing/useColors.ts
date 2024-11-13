@@ -24,7 +24,7 @@ function generatePresetControls(fn: ColorSetter) {
 }
 
 export function useColors() {
-  const [{ bodyColor }, set] = useControls(() => ({
+  const [{ bodyColor }, set] = useControls('Colors', () => ({
     bodyColor: {
       value: colorPresets.light,
       label: 'Body Color',

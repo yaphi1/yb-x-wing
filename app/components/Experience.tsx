@@ -10,7 +10,7 @@ import { OtherPlayers } from './OtherPlayers';
 import { Ground } from './Ground';
 import { Fog } from './Fog';
 import { Stats } from '@react-three/drei';
-import { useControls } from 'leva';
+import { button, useControls } from 'leva';
 
 export function Experience() {
   const { isDebugMode } = useDebugMode();
@@ -43,6 +43,18 @@ export function Experience() {
         editable: false,
       },
     },
+  );
+
+  useControls(
+    'More Info',
+    {
+      'See the code': button(() => {
+        window.open('https://github.com/yaphi1/yb-x-wing', '_blank');
+      }),
+    },
+    {
+      collapsed: true,
+    }
   );
 
   return (
